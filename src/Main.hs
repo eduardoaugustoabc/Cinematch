@@ -12,10 +12,22 @@ main = do
 
 acoes :: RepositorioFilmes -> Char -> IO RepositorioFilmes
 acoes rep cmd
-    | cmd == 'A' = addFilme rep
-    | cmd == 'B' = return rep
+    | cmd == 'A' = do
+        repo <- addFilme rep
+        comando <- readLn :: IO Char
+        acoes repo comando
+    | cmd == 'B' = do
+        exibirFilme rep
+        comando <- readLn :: IO Char
+        acoes rep comando
     | cmd == 'S' = return rep
-    | otherwise = acoes rep cmd
+    | otherwise = do
+        putStrLn "Comando inválido"
+        comando <- readLn :: IO Char
+        acoes rep comando
+
+exibirFilme :: RepositorioFilmes -> IO ()
+exibirFilme rep = print rep
 
 addFilme :: RepositorioFilmes -> IO RepositorioFilmes
 addFilme rep = do
