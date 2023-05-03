@@ -27,9 +27,6 @@ instance Show Filme where
            "\nNota Usuários: " ++ show (notaUsuarios f) ++
            "\nUsuários que votaram: " ++ usuariosVotates f ++
            "\nArrecadação: U$ " ++ arrecadacao f ++ " milhões" ++
-           "\nNota do IMDB: " ++ show (notaUsuario f) ++
+           "\nNota do IMDB: " ++ show (notaImdb f) ++
            "\nNota do usuário: " ++ show (notaUsuario f) ++
            "\n-----------------------------"
-
-
-
