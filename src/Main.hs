@@ -71,9 +71,6 @@ lerCriaFilme = do
   atores <- readLn :: IO [String]
   dataLancamento <- readLn :: IO String
   duracao <- readLn :: IO String
-  notaUsuarios <- readLn :: IO Float
-  qtdUsuarios <- readLn :: IO String
-  arrecadacao <- readLn :: IO String
   notaImdb <- readLn :: IO Int
-  let filme = criarFilme titulo generos descricao diretor atores dataLancamento duracao notaUsuarios qtdUsuarios arrecadacao notaImdb
+  let filme = criarFilme titulo generos descricao diretor atores dataLancamento duracao notaImdb
   return filme

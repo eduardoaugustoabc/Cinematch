@@ -10,9 +10,6 @@ data Filme = Filme {
   atores :: [String],
   dataLancamento :: String,
   duracao :: String,
-  notaUsuarios :: Float,
-  usuariosVotates :: String,
-  arrecadacao :: String,
   notaImdb :: Int,
   notaUsuario :: Float
   }
@@ -28,9 +25,6 @@ instance Show Filme where
            "\nAtores: " ++ show (atores f) ++
            "\nData de lançamento: " ++ dataLancamento f ++
            "\nDuração: " ++ duracao f ++ " minutos" ++
-           "\nNota Usuários: " ++ show (notaUsuarios f) ++
-           "\nUsuários que votaram: " ++ usuariosVotates f ++
-           "\nArrecadação: U$ " ++ arrecadacao f ++ " milhões" ++
            "\nNota do IMDB: " ++ show (notaImdb f) ++
            "\nNota do usuário: " ++ show (notaUsuario f) ++
            "\n-----------------------------"
@@ -53,6 +47,3 @@ getDataFilme (Filme { dataLancamento = d}) = d
 
 getNotaImdbFilme :: Filme -> Int
 getNotaImdbFilme (Filme { notaImdb = nI }) = nI
-
-getNotaUsuariosFilme :: Filme -> Float
-getNotaUsuariosFilme (Filme { notaUsuarios = nU }) = nU
