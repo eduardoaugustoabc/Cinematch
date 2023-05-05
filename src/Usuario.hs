@@ -96,7 +96,7 @@ maior filme (x:xs) filmesrep filmesfav saida saidaArray us
 
 --ok
 {-Uma função auxiliar para verificar se os filmes são iguais-}
-ehIgual :: Filme -> [Filme] -> Bool
+ehIgual :: Filme -> Filme -> Bool
 ehIgual filme filmeFav = (getTituloFilme filme == getTituloFilme filmeFav) && (getDataFilme filme == getDataFilme filmeFav)
 
 --ok
