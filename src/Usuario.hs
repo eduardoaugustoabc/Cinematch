@@ -69,7 +69,7 @@ auxRecomenda :: [Filme] -> [Filme] -> [Filme] -> Int -> [Filme] -> Usuario -> [F
 auxRecomenda filmesFavoritos (y:ys) filmesDoRep quantidade saida us
         | (quantidade <= 0 || length (y:ys) == 0) = saida
         | (verificaSeEsta y saida) || (verificaSeEsta y filmesFavoritos) = auxRecomenda filmesFavoritos (ys) filmesDoRep quantidade saida us
-        | otherwise = [(maior y filmesDoRep filmesDoRep filmesFavoritos y saida us)] ++ (auxRecomenda filmesFavoritos ys filmesDoRep (quantidade - 1) saida us)
+        | otherwise = [(maior y filmesDoRep filmesFavoritos y saida us)] ++ (auxRecomenda filmesFavoritos ys filmesDoRep (quantidade - 1) saida us)
 
 --ok
 {-Uma função auxiliar para verificar se o filme está no array-}
@@ -87,12 +87,12 @@ Usando verificações e a função atribuiNota ele retorna o filme com a maior n
 3) Se a nota do filme for maior ou igual ao filme x, então chame maior passando o próximo elemento do array do repositório
 4) Se chegar na quarta linha, então a nota de x é maior que a do filme e por isso chame recursivamente usando x como filme
 -}
-maior :: Filme -> [Filme] -> [Filme] -> [Filme] -> Filme -> [Filme]-> Usuario -> Filme
-maior filme (x:xs) filmesrep filmesfav saida saidaArray us
+maior :: Filme -> [Filme] -> [Filme] -> Filme -> [Filme]-> Usuario -> Filme
+maior filme (x:xs) filmesfav saida saidaArray us
         | length (x:xs) <= 0 = saida
-        | (verificaSeEsta x filmesfav) || (verificaSeEsta x saidaArray) = maior filme (x:xs) filmesrep filmesfav saida saidaArray us
-        | (atribuiNota filme (getGeneros us) (getDiretores us) (getAtores us)) >= (atribuiNota x(getGeneros us) (getDiretores us) (getAtores us)) = maior filme (xs) filmesrep filmesfav saida saidaArray us
-        | otherwise = maior x filmesrep filmesrep filmesfav x saidaArray us
+        | (verificaSeEsta x filmesfav) || (verificaSeEsta x saidaArray) = maior filme (x:xs) filmesfav saida saidaArray us
+        | (atribuiNota filme (getGeneros us) (getDiretores us) (getAtores us)) >= (atribuiNota x(getGeneros us) (getDiretores us) (getAtores us)) = maior filme (xs) filmesfav saida saidaArray us
+        | otherwise = maior x (xs) filmesfav x saidaArray us
 
 --ok
 {-Uma função auxiliar para verificar se os filmes são iguais-}
