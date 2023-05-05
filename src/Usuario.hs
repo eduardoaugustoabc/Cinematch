@@ -96,6 +96,7 @@ maior filme (x:xs) filmesrep filmesfav saida saidaArray us
 
 --ok
 {-Uma função auxiliar para verificar se os filmes são iguais-}
+ehIgual :: Filme -> [Filme] -> Bool
 ehIgual filme filmeFav = (getTituloFilme filme == getTituloFilme filmeFav) && (getDataFilme filme == getDataFilme filmeFav)
 
 --ok
@@ -115,7 +116,6 @@ Por fim retorna em float a nota correspondente ao filme.
 -}
 atribuiNota:: Filme -> [String] -> [String] -> [String] -> Float
 atribuiNota filme generos diretores atores = (((fromIntegral (atribuiValor generos (getGenerosFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getGenerosFilme filme)) :: Float)) + (((fromIntegral (atribuiValor atores (getAtoresFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getAtoresFilme filme)) :: Float)) + (similaridadeDiretor diretores (getDiretorFilme filme)) + ((getNotaUsuariosFilme filme) + ((fromIntegral (getNotaImdbFilme filme) :: Float) / 10.0))
-
 
 --ok
 {-Retorna 1 se há correspondente entre o elemento comparado-}
