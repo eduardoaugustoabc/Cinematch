@@ -1,7 +1,11 @@
 import Filme
 import RepositorioFilmes
 import Usuario
+import Util.Split
+
 import Text.CSV
+
+
 
 main :: IO ()
 main = do
@@ -18,9 +22,9 @@ main = do
                        , filmesFav = []
                        , watchlist = []
                        , filmesAssistidos = []
-                       })
-  putStrLn "Obrigado por usar o CINEMATCH!"
-
+                       })           
+  
+                       
 
 opcoes :: RepositorioFilmes -> Usuario -> IO ()
 opcoes rep user = do
@@ -83,8 +87,17 @@ acoes cmd rep user
   | cmd == "10"    = do
     return ()
   | otherwise      = do
-    opcoes rep user
     putStrLn "Comando inválido ou não implementado até o momento"
+    opcoes rep user
+
+
+
+
+
+
+
+
+
 
 exibirRep :: RepositorioFilmes -> IO ()
 exibirRep rep = print rep
@@ -119,7 +132,7 @@ lerCriaFilme = do
 
 
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
-addAll [] rep user = opcoes rep user
+addAll [x] rep user = opcoes rep user
 addAll (x:xs) rep user = do
   let titulo = x !! 1 
       generos = x !! 2
@@ -131,12 +144,3 @@ addAll (x:xs) rep user = do
       notaImdb = x !! 11
       filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) 0.0
   addAll xs (addFilmeRepositorio rep filme) user
-
-split :: Char -> String -> [String]
-split separador str = separateBy separador str "" []
-
-separateBy :: Char -> String -> String -> [String] -> [String]
-separateBy _ [] strAux lista = lista ++ [strAux]
-separateBy separador (x : xs) strAux lista
-  | x /= separador = separateBy separador xs (strAux ++ [x]) lista
-  | otherwise = separateBy separador xs "" (lista ++ [strAux])
