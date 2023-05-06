@@ -134,7 +134,7 @@ nota4 nota do imdb associada ao filme
 Por fim retorna em float correspondente a nota do filme.
 -}
 atribuiNota:: Filme -> [String] -> [String] -> [String] -> Float
-atribuiNota filme generos diretores atores = (((fromIntegral (atribuiValor generos (getGenerosFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getGenerosFilme filme)) :: Float)) + (((fromIntegral (atribuiValor atores (getAtoresFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getAtoresFilme filme)) :: Float)) + ((fromIntegral (similaridade (getDiretorFilme filme) diretores) :: Float) * 20) + (((fromIntegral (getNotaImdbFilme filme) :: Float) / 100.0) * 20.0)
+atribuiNota filme generos diretores atores = (((fromIntegral (atribuiValor generos (getGenerosFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getGenerosFilme filme)) :: Float)) + (((fromIntegral (atribuiValor atores (getAtoresFilme filme)) :: Float) * 30.0) / (fromIntegral (length (getAtoresFilme filme)) :: Float)) + ((fromIntegral (similaridade (getDiretorFilme filme) diretores) :: Float) * 20.0) + (((fromIntegral (getNotaImdbFilme filme) :: Float) / 100.0) * 20.0)
 
 --ok
 {-Retorna 1 se há correspondente entre os elementos comparados, faz isso até achar correspondente ou a lista ficar vazia.-}
