@@ -9,9 +9,9 @@ data RepositorioFilmes = RepositorioFilmes {
 } deriving (Show)
 
 {-Chama o construtor de Filme e insere os dados-}
-criarFilme :: String -> [String] -> String -> String-> [String] -> String -> String -> Int -> Filme
-criarFilme titulo generos descricao diretor atores dataLancamento duracao notaImdb =
-  Filme { titulo = titulo, generos = generos, descricao = descricao, diretor = diretor, atores = atores, dataLancamento = dataLancamento, duracao = duracao, notaImdb = notaImdb, notaUsuario = 0.0 }
+criarFilme :: String -> [String] -> String -> String-> [String] -> String -> String -> Int -> Float -> Filme
+criarFilme titulo generos descricao diretor atores dataLancamento duracao notaImdb notaUsuario =
+  Filme { titulo = titulo, generos = generos, descricao = descricao, diretor = diretor, atores = atores, dataLancamento = dataLancamento, duracao = duracao, notaImdb = notaImdb, notaUsuario = notaUsuario }
 
 {-Get do repositório, retorna a lista de filmes-}
 getRepFilmes :: RepositorioFilmes -> [Filme]
