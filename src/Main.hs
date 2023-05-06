@@ -90,47 +90,7 @@ acoes cmd rep user
     putStrLn "Comando inválido ou não implementado até o momento"
     opcoes rep user
 
-
-
-
-
-
-
-
-
-
-exibirRep :: RepositorioFilmes -> IO ()
-exibirRep rep = print rep
-
-addFilme :: RepositorioFilmes -> IO RepositorioFilmes
-addFilme rep = do
-  oFilme <- lerCriaFilme
-  return (addFilmeRepositorio rep oFilme)
-
-lerCriaFilme :: IO Filme
-lerCriaFilme = do
-  putStrLn "Digite o nome do filme:"
-  titulo <- getLine
-  putStrLn "Digite os gêneros do filme (separados por espaço):"
-  generos <- getLine
-  putStrLn "Digite a descrição do filme:"
-  descricao <- getLine
-  putStrLn "Digite o nome do diretor do filme:"
-  diretor <- getLine
-  putStrLn "Digite os nomes dos atores do filme (separados por espaço):"
-  atores <- getLine
-  putStrLn "Digite a data de lançamento do filme (formato: dd/mm/aaaa):"
-  dataLancamento <- getLine
-  putStrLn "Digite a duração do filme (em minutos):"
-  duracao <- getLine
-  putStrLn "Digite a nota do filme no IMDb (entre 0 e 100):"
-  notaImdb <- getLine
-  putStrLn "Digite a nota do filme na sua opiniao (entre 0.0 e 10.0):"
-  notaUsuario <- getLine
-  let filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
-  return filme
-
-
+{-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes-}
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
 addAll [x] rep user = opcoes rep user
 addAll (x:xs) rep user = do

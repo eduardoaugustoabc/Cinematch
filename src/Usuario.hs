@@ -2,6 +2,7 @@ module Usuario where
 
 import Filme
 import RepositorioFilmes
+import Util.Split
 {-# LANGUAGE BangPatterns #-}
 
 {-Tipo usuário, guarda as informações de gostos do usuário-}
