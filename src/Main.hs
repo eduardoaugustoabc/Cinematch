@@ -6,7 +6,7 @@ import Util.Split
 import Text.CSV
 
 
-
+{-Função de inicialização do projeto. Lê o arquivo IMDB-Movie-Data.csv e , com o resultado da leitura, instancia a função addAll , para que a aplicação siga seu fluxo. -}
 main :: IO ()
 main = do
   putStrLn "---------------------------------------------------------------"
@@ -25,7 +25,7 @@ main = do
                        })           
   
                        
-
+{-Função responsavel por exibir e receber (input) a opção do usuário sobre o que ele deseja usar da aplicação. Instância acoes com o valor recebido.-}
 opcoes :: RepositorioFilmes -> Usuario -> IO ()
 opcoes rep user = do
   putStrLn "++---------------------Escolha uma ação----------------------++"
@@ -48,6 +48,7 @@ opcoes rep user = do
     novoRepo <- acoes opcao rep user
     return ()
 
+{-Função que , de acordo com o valor recebido da função opções , irá realizar operações (instanciando as funções necessárias).-}
 acoes :: String -> RepositorioFilmes -> Usuario -> IO ()
 acoes cmd rep user
   | cmd == "1"     =  do
@@ -90,7 +91,7 @@ acoes cmd rep user
     putStrLn "Comando inválido ou não implementado até o momento"
     opcoes rep user
 
-{-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes-}
+{-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes. Após isso , instância a função opcoes.-}
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
 addAll [x] rep user = opcoes rep user
 addAll (x:xs) rep user = do
