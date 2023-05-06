@@ -12,9 +12,9 @@ main = do
   resultado <- parseCSVFromFile arquivo
   case resultado of
     Right linhas -> do
-      addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = ["ação", "aventura"]
-                       , diretoresFav = ["Tarantino"]
-                       , atoresFav = ["Keanu Reeves", "Scarlett Johansson"]
+      addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = ["Mystery", "sci-fi", "Action", "Adventure", "Biography"]
+                       , diretoresFav = ["Tarantino", "Ridley Scott"]
+                       , atoresFav = ["Keanu", "Scarlett Johansson", "waltz", "Charlize Theron", "Charlie Hunnam", "Robert Pattinson", "Sienna Miller", "Tom Holland"]
                        , filmesFav = []
                        , watchlist = []
                        , filmesAssistidos = []
@@ -47,7 +47,7 @@ opcoes rep user = do
 acoes :: String -> RepositorioFilmes -> Usuario -> IO ()
 acoes cmd rep user
   | cmd == "1"     =  do
-    exibirFilme rep
+    exibirRep rep
     opcoes rep user
   | cmd == "2"     = do
     putStr "Qual gênero deseja favoritar : "
@@ -69,7 +69,13 @@ acoes cmd rep user
     opcoes rep us
   | cmd == "5"     = do
     qtd <- readLn :: IO Int
-    print(recomenda qtd (getFilmesFav user) (getRepFilmes rep) user)
+    print(recomenda qtd (getRepFilmes rep) user)
+    opcoes rep user
+  | cmd == "6"     = do
+    print(getDiretores user)
+    opcoes rep user
+  | cmd == "7"     = do
+    print(getWatch user)
     opcoes rep user
   | cmd == "8"     = do
     repo <- addFilme rep
@@ -77,16 +83,11 @@ acoes cmd rep user
   | cmd == "10"    = do
     return ()
   | otherwise      = do
+    opcoes rep user
     putStrLn "Comando inválido ou não implementado até o momento"
 
-
-
-
-
-
-
-exibirFilme :: RepositorioFilmes -> IO ()
-exibirFilme rep = print rep
+exibirRep :: RepositorioFilmes -> IO ()
+exibirRep rep = print rep
 
 addFilme :: RepositorioFilmes -> IO RepositorioFilmes
 addFilme rep = do
@@ -111,7 +112,9 @@ lerCriaFilme = do
   duracao <- getLine
   putStrLn "Digite a nota do filme no IMDb (entre 0 e 100):"
   notaImdb <- getLine
-  let filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int)
+  putStrLn "Digite a nota do filme na sua opiniao (entre 0.0 e 10.0):"
+  notaUsuario <- getLine
+  let filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   return filme
 
 
@@ -126,7 +129,7 @@ addAll (x:xs) rep user = do
       dataLancamento = x !! 6
       duracao = x !! 7
       notaImdb = x !! 11
-      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int)
+      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) 0.0
   addAll xs (addFilmeRepositorio rep filme) user
 
 split :: Char -> String -> [String]
