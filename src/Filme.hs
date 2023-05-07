@@ -2,6 +2,7 @@ module Filme where
 
 import Data.List (intercalate)
 
+
 {-Tipo Filme. tem todos os itens necessarios de um filme.-}
 
 data Filme = Filme {
@@ -53,9 +54,5 @@ getNotaImdbFilme (Filme { notaImdb = nI }) = nI
 
 getAtributos :: Filme -> [String]
 getAtributos (Filme { titulo = t, generos = g, descricao = d, diretor = dr, atores = at, dataLancamento = dt, duracao = du, notaImdb = nI, notaUsuario = nU }) =
-  [t] ++ concatena g ++ [d] ++ [dr] ++ concatena at ++ [dt] ++ [du] ++ [show nI] ++ [show nU]
+  [t] ++ [intercalate "," g] ++ [d] ++ [dr] ++ [intercalate "," at] ++ [dt] ++ [du] ++ [show nI] ++ [show nU]
 
-
-concatena :: [String] -> [String]
-concatena xs = [intercalate "," xs]
-  

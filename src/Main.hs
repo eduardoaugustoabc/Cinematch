@@ -100,15 +100,16 @@ acoes cmd rep user
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
 addAll [x] rep user = opcoes rep user
 addAll (x:xs) rep user = do
-  let titulo = x !! 1 
-      generos = x !! 2
-      descricao = x !! 3 
-      diretor = x !! 4
-      atores = x !! 5
-      dataLancamento = x !! 6
-      duracao = x !! 7
-      notaImdb = x !! 11
-      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) 0.0
+  let titulo = x !! 0
+      generos = x !! 1
+      descricao = x !! 2 
+      diretor = x !! 3
+      atores = x !! 4
+      dataLancamento = x !! 5
+      duracao = x !! 6
+      notaImdb = x !! 7
+      notaUsuario = x !! 8
+      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   addAll xs (addFilmeRepositorio rep filme) user
 
 

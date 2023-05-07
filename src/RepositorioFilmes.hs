@@ -4,6 +4,7 @@ import Filme
 import Util.Split
 
 
+
 {-Tipo Repositorio de Filmes. Guarda um array de filmes.-}
 
 data RepositorioFilmes = RepositorioFilmes {
@@ -54,7 +55,7 @@ lerCriaFilme = do
   notaImdb <- getLine
   putStrLn "Digite a nota do filme na sua opiniao (entre 0.0 e 10.0):"
   notaUsuario <- getLine
-  let filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
+  let filme = criarFilme titulo (split ' ' generos) descricao diretor (split ' ' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   return filme
 
 {-
