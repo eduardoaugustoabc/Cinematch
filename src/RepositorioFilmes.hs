@@ -57,15 +57,3 @@ lerCriaFilme = do
   notaUsuario <- getLine
   let filme = criarFilme titulo (split ' ' generos) descricao diretor (split ' ' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   return filme
-
-{-
-add :: String -> String -> String -> String -> String -> String -> String -> String -> String -> IO ()
-add titulo generos descricao diretor atores dataLancamento duracao notaImdb notaUsuario = do
-  conteudo <- BL.readFile "IMDB-Movie-Data.csv"
-  case Csv.decode Csv.NoHeader conteudo of
-    Left erro -> print erro
-    Right linhas -> do
-      let novaLinha = ["titulo", "diretor", "ano"]
-          novoCSV = V.toList linhas ++ [novaLinha]
-      BL.writeFile "IMDB-Movie-Data.csv" (Csv.encode novoCSV)
-      putStrLn "Linha adicionada com sucesso!"-}

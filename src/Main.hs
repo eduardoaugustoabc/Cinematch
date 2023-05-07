@@ -2,13 +2,9 @@ import Filme
 import RepositorioFilmes
 import Usuario
 import Util.Split
-
+import Persistencia.PersistenciaFilmes
 import Text.CSV
 
-
-import qualified Data.ByteString.Lazy as BL
-import qualified Data.Csv as Csv
-import qualified Data.Vector as V
 
 
 {-Função de inicialização do projeto. Lê o arquivo IMDB-Movie-Data.csv e , com o resultado da leitura, instancia a função addAll , para que a aplicação siga seu fluxo. -}
@@ -111,15 +107,3 @@ addAll (x:xs) rep user = do
       notaUsuario = x !! 8
       filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   addAll xs (addFilmeRepositorio rep filme) user
-
-
-parseFilmes :: [Filme] -> [[String]]
-parseFilmes [] = []
-parseFilmes (x:xs) = getAtributos x : parseFilmes xs
-
-salvaFilmesPersistentemente :: [Filme] -> IO ()
-salvaFilmesPersistentemente filmes = do
-  let listaDeFilmes = parseFilmes filmes
-  let novoCSV = Csv.encode listaDeFilmes
-  BL.writeFile "IMDB-Movie-Data.csv" novoCSV
-  putStrLn "Linha adicionada com sucesso!"

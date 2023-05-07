@@ -55,4 +55,3 @@ getNotaImdbFilme (Filme { notaImdb = nI }) = nI
 getAtributos :: Filme -> [String]
 getAtributos (Filme { titulo = t, generos = g, descricao = d, diretor = dr, atores = at, dataLancamento = dt, duracao = du, notaImdb = nI, notaUsuario = nU }) =
   [t] ++ [intercalate "," g] ++ [d] ++ [dr] ++ [intercalate "," at] ++ [dt] ++ [du] ++ [show nI] ++ [show nU]
-
