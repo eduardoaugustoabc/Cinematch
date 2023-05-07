@@ -6,6 +6,11 @@ import Util.Split
 import Text.CSV
 
 
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.Csv as Csv
+import qualified Data.Vector as V
+
+
 {-Função de inicialização do projeto. Lê o arquivo IMDB-Movie-Data.csv e , com o resultado da leitura, instancia a função addAll , para que a aplicação siga seu fluxo. -}
 main :: IO ()
 main = do
@@ -42,8 +47,10 @@ opcoes rep user = do
   putStr "Opção escolhida : "
   opcao <- getLine
   putStrLn "++-----------------------------------------------------------++"
-  if opcao == "10"
-    then return ()
+  if opcao == "10" then do
+    putStrLn "Obrigado por usar o CINEMATCH!"
+    salvaFilmesPersistentemente (getRepFilmes rep)
+    return ()
   else do
     novoRepo <- acoes opcao rep user
     return ()
@@ -85,8 +92,6 @@ acoes cmd rep user
   | cmd == "8"     = do
     repo <- addFilme rep
     opcoes repo user
-  | cmd == "10"    = do
-    return ()
   | otherwise      = do
     putStrLn "Comando inválido ou não implementado até o momento"
     opcoes rep user
@@ -105,3 +110,15 @@ addAll (x:xs) rep user = do
       notaImdb = x !! 11
       filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) 0.0
   addAll xs (addFilmeRepositorio rep filme) user
+
+
+parseFilmes :: [Filme] -> [[String]]
+parseFilmes [] = []
+parseFilmes (x:xs) = getAtributos x : parseFilmes xs
+
+salvaFilmesPersistentemente :: [Filme] -> IO ()
+salvaFilmesPersistentemente filmes = do
+  let listaDeFilmes = parseFilmes filmes
+  let novoCSV = Csv.encode listaDeFilmes
+  BL.writeFile "IMDB-Movie-Data.csv" novoCSV
+  putStrLn "Linha adicionada com sucesso!"

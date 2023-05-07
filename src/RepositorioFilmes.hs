@@ -46,7 +46,7 @@ lerCriaFilme = do
   diretor <- getLine
   putStrLn "Digite os nomes dos atores do filme (separados por espaço):"
   atores <- getLine
-  putStrLn "Digite a data de lançamento do filme (formato: dd/mm/aaaa):"
+  putStrLn "Digite o ano de lançamento do filme:"
   dataLancamento <- getLine
   putStrLn "Digite a duração do filme (em minutos):"
   duracao <- getLine
@@ -57,8 +57,7 @@ lerCriaFilme = do
   let filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   return filme
 
-
-{-Ainda nn implementado(salvar filme no .csv) - NÃO TOQUEN AQUI 
+{-
 add :: String -> String -> String -> String -> String -> String -> String -> String -> String -> IO ()
 add titulo generos descricao diretor atores dataLancamento duracao notaImdb notaUsuario = do
   conteudo <- BL.readFile "IMDB-Movie-Data.csv"
