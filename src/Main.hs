@@ -30,7 +30,7 @@ main = do
 opcoes :: RepositorioFilmes -> Usuario -> IO ()
 opcoes rep user = do
   putStrLn "++---------------------Escolha uma ação----------------------++"
-  putStrLn " 1) Exibir Filme"
+  putStrLn " 1) Pesquisar"
   putStrLn " 2) Favoritar Gênero"
   putStrLn " 3) Favoritar Ator"
   putStrLn " 4) Favoritar Diretor"
@@ -55,8 +55,7 @@ opcoes rep user = do
 acoes :: String -> RepositorioFilmes -> Usuario -> IO ()
 acoes cmd rep user
   | cmd == "1"     =  do
-    exibirRep rep
-    opcoes rep user
+    selecaoPesquisa rep
   | cmd == "2"     = do
     putStr "Qual gênero deseja favoritar : "
     com <- getLine
