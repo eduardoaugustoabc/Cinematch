@@ -33,6 +33,9 @@ getAtores (Usuario { atoresFav = at}) = at
 getFilmesFav :: Usuario -> [Filme]
 getFilmesFav (Usuario { filmesFav = fs}) = fs
 
+getFilmesAssistidos :: Usuario -> [Filme]
+getFilmesAssistidos (Usuario { filmesAssistidos = fa } ) = fa
+
 {-Adicionam itens nas listas de favoritos e watchlist-}
 
 addWatch:: Usuario -> Filme -> IO Usuario

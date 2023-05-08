@@ -1,4 +1,6 @@
 import Filme
+import Pesquisar
+import Dashboard
 import RepositorioFilmes
 import Usuario
 import Util.Split

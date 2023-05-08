@@ -51,6 +51,8 @@ getDataFilme (Filme { dataLancamento = d}) = d
 getNotaImdbFilme :: Filme -> Int
 getNotaImdbFilme (Filme { notaImdb = nI }) = nI
 
+getNotaUsuario :: Filme -> Float
+getNotaUsuario (Filme { notaUsuario = nU }) = nU
 
 getAtributos :: Filme -> [String]
 getAtributos (Filme { titulo = t, generos = g, descricao = d, diretor = dr, atores = at, dataLancamento = dt, duracao = du, notaImdb = nI, notaUsuario = nU }) =
