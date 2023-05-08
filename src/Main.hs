@@ -87,6 +87,10 @@ acoes cmd rep user
   | cmd == "8"     = do
     repo <- addFilme rep
     opcoes repo user
+  | cmd == "9"     = do
+    putStrLn(dashboardString user)
+  | cmd == "10"    = do
+    return()
   | otherwise      = do
     putStrLn "Comando inválido ou não implementado até o momento"
     opcoes rep user
