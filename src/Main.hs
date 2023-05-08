@@ -92,6 +92,7 @@ acoes cmd rep user
     putStrLn "Comando inválido ou não implementado até o momento"
     opcoes rep user
 
+
 {-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes. Após isso , instância a função opcoes.-}
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
 addAll [x] rep user = opcoes rep user
@@ -104,6 +105,6 @@ addAll (x:xs) rep user = do
       dataLancamento = x !! 5
       duracao = x !! 6
       notaImdb = x !! 7
-      notaUsuario = x !! 8
-      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
+      notaUsuaio = x !! 8
+      filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuaio :: Float)
   addAll xs (addFilmeRepositorio rep filme) user
