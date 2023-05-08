@@ -12,11 +12,11 @@
 <hr />
 <h2>Autores</h2>
 <ul>
-    <li>Gabriel Dantas De Oliveira</li>
-    <li>boçal 1</li>
-    <li>boçal 2</li>
-    <li>boçal 3</li>
-    <li>boçal 4</li>
+    <li>Gabriel Dantas De Oliveira - 121110669</li>
+    <li>João Pedro Campos Porto - 121110403</li>
+    <li>Eduardo Augusto Andrade Bezerra Cavalcanti - 121110349</li>
+    <li>Lucas de Lima da Silva - 121110517</li>
+    <li>José Arthur Soares Bezerra - 121110566</li>
 </ul>
 <hr />
 
