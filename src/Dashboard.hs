@@ -21,10 +21,24 @@ generosMaisAssistidos usuario = take 3 $ map show $ reverse $ Map.toList $ Map.f
     filmesAssistidos = getFilmesAssistidos usuario
     generosAssistidos = [(genero, 1) | filme <-filmesAssistidos, genero <- getGenerosFilme filme]
 
+mediaNotasGeneros :: Usuario -> Map.Map String Float
+mediaNotasGeneros usuario = Map.fromListWith mediaPorGenero notasPorGenero
+  where
+    filmesAssistidos = getFilmesAssistidos usuario
+    generosFilmesAssistidos = concatMap getGenerosFilme filmesAssistidos
+    notasFilmesAssistidos = map getNotaUsuario filmesAssistidos
+    notasPorGenero = zip generosFilmesAssistidos notasFilmesAssistidos
+    mediaPorGenero soma notas = (soma + notas) / 2
+
 
 dashboardString :: Usuario -> String
 dashboardString usuario = "Filmes assistidos: " ++ show (quantidadeFilmesAssistidos usuario) ++ "\n" ++
                    "Média das notas: " ++ show (mediadeNotasUsuario usuario) ++ "\n" ++
-                   "Gêneros mais assistidos: " ++ generos       
-    where
-      generos = intercalate ", " (generosMaisAssistidos usuario)
+                   "Gêneros mais assistidos: " ++ generos ++ "\n" ++
+                   "Média das notas por gênero:\n" ++ notasPorGenero
+  where
+    generos = intercalate ", " (generosMaisAssistidos usuario)
+    notasPorGenero =
+      intercalate "\n" $
+      map (\(genero, nota) -> genero ++ ": " ++ show nota) $
+      Map.toList $ mediaNotasGeneros usuario
