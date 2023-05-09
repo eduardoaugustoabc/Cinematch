@@ -1,5 +1,5 @@
 <h1>CINEMATCH</h1>
-![image](https://firebasestorage.googleapis.com/v0/b/megamart-1fe70.appspot.com/o/images%2Fcinematch.png?alt=media&token=04c24d81-cc81-4668-b2ea-a99c7521af30)
+<img src="https://firebasestorage.googleapis.com/v0/b/megamart-1fe70.appspot.com/o/images%2Fcinematch.png?alt=media&token=04c24d81-cc81-4668-b2ea-a99c7521af30" alt="logo" />
 
 <hr />
 <h2>Descrição :</h2>
