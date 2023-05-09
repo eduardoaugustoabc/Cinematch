@@ -1,5 +1,5 @@
 <h1>CINEMATCH</h1>
-<p>IMAGEN DO PROJETO VAI AQUI</p>
+![image]([https://user-images.githubusercontent.com/51303068/205130546-228228d4-d76c-4d89-b64d-49836daba82a.png](https://github.com/gabrieldantasoli/My-images/blob/master/cinematch.png))
 
 <hr />
 <h2>Descrição :</h2>
@@ -7,7 +7,18 @@
 
 <hr />
 <h2>Como usar</h2>
-<p>Não escrito ainda</p>
+<p>Nosso projeto usa o Cabal - um sistema de gerenciamento de pacotes para a linguagen de programação <strong>Haskell</strong>.</p>
+
+<p>Visando evitar possiveis erros , antes de inicializar o projeto ,  digitar no diretório do projeto:</p>
+```bash
+cabal update
+```
+
+<p>Em seguida : </p>
+```bash
+cabal build
+cabal run
+```
 
 <hr />
 <h2>Autores</h2>
