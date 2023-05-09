@@ -1,5 +1,5 @@
 <h1>CINEMATCH</h1>
-![image](https://user-images.githubusercontent.com/51303068/205130546-228228d4-d76c-4d89-b64d-49836daba82a.png](https://github.com/gabrieldantasoli/My-images/blob/master/cinematch.png)
+![image]([https://user-images.githubusercontent.com/51303068/205130546-228228d4-d76c-4d89-b64d-49836daba82a.png](https://github.com/gabrieldantasoli/My-images/blob/master/cinematch.png](https://github.com/gabrieldantasoli/My-images/blob/master/cinematch.png?raw=true))
 
 <hr />
 <h2>Descrição :</h2>
