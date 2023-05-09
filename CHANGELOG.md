@@ -1,4 +1,4 @@
-# Revision history for CINEMATCH
+# Revision history for cabal-cinematch
 
 ## 0.1.0.0 -- YYYY-mm-dd
 
