@@ -20,6 +20,10 @@ git clone https://github.com/lucaslimasilvafoligem/Cinematch.git
 <p>Visando evitar possiveis erros , antes de inicializar o projeto ,  digitar no diretório do projeto:</p>
 
 ```bash
+Instale o Haskell e o cabal (versão 3.10.1.0)
+```
+
+```bash
 cabal update
 ```
 
