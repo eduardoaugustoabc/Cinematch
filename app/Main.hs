@@ -5,6 +5,7 @@ import RepositorioFilmes
 import Usuario
 import Util.Split
 import Persistencia.PersistenciaFilmes
+import Persistencia.PersistenciaUsersPreferences
 import Text.CSV
 import Data.Maybe (listToMaybe)
 
@@ -20,18 +21,23 @@ main = do
   let userPreferences = "UserPreferences.csv"
   resultadoFilmesCSV <- parseCSVFromFile filmesSCV
   resultadoUserPreferencesCSV <- parseCSVFromFile userPreferences
-  
-
-
-  case resultadoFilmesCSV of
-    Right linhas -> do
-      addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = ["Mystery", "sci-fi", "Action", "Adventure", "Biography"]
-                       , diretoresFav = ["Tarantino", "Ridley Scott"]
-                       , atoresFav = ["Keanu", "Scarlett Johansson", "waltz", "Charlize Theron", "Charlie Hunnam", "Robert Pattinson", "Sienna Miller", "Tom Holland"]
-                       , filmesFav = [] 
-                       , watchlist = []
-                       , filmesAssistidos = []
-                       })           
+  case resultadoUserPreferencesCSV of 
+    Right linhas1 -> do
+      let generos = (linhas1 !! 0)
+          diretores = (linhas1 !! 1)
+          atores = (linhas1 !! 2)
+          filmesFavoritos = (linhas1 !! 3)
+          watchList = (linhas1 !! 4)
+          filmesAssist = (linhas1 !! 5)
+      case resultadoFilmesCSV of
+        Right linhas -> do
+          addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = generos
+                            , diretoresFav = diretores
+                            , atoresFav = atores
+                            , filmesFav = [] 
+                            , watchlist = []
+                            , filmesAssistidos = []
+                            }) filmesFavoritos watchList filmesAssist
   
                        
 {-Função responsavel por exibir e receber (input) a opção do usuário sobre o que ele deseja usar da aplicação. Instância acoes com o valor recebido.-}
@@ -66,6 +72,7 @@ opcoes rep user = do
   if opcao == "22" then do
     putStrLn "Obrigado por usar o CINEMATCH!"
     salvaFilmesPersistentemente (getRepFilmes rep)
+    salvaPreferenciasUsuarioPersistentemente (getGeneros user) (getDiretores user) (getAtores user) (getFilmesFav user) (getWatch user) (getFilmesAssistidos user)
     return ()
   else do
     novoRepo <- acoes opcao rep user
@@ -205,10 +212,16 @@ acoes cmd rep user
     opcoes rep user
 
 
+
+
 {-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes. Após isso , instância a função opcoes.-}
-addAll :: [[String]] -> RepositorioFilmes -> Usuario -> IO ()
-addAll [x] rep user = opcoes rep user
-addAll (x:xs) rep user = do
+addAll :: [[String]] -> RepositorioFilmes -> Usuario -> [String] -> [String] -> [String] -> IO ()
+addAll [x] rep user favoritos watch assistidos = do
+  favoritos <- return $ csvUsuario favoritos [] rep
+  opcoes rep =<< saveFilmeFavorito favoritos user
+  
+
+addAll (x:xs) rep user favoritos watch assistidos = do
   let titulo = x !! 0
       generos = x !! 1
       descricao = x !! 2 
@@ -219,7 +232,13 @@ addAll (x:xs) rep user = do
       notaImdb = x !! 7
       notaUsuaio = x !! 8
       filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuaio :: Float)
-  addAll xs (addFilmeRepositorio rep filme) user
+  addAll xs (addFilmeRepositorio rep filme) user favoritos watch assistidos
+
+saveFilmeFavorito :: [Filme] -> Usuario -> IO Usuario
+saveFilmeFavorito [] user = return user
+saveFilmeFavorito (x:xs) user = favoritarFilme user x >>= saveFilmeFavorito xs
+
+  
 
 verificaSeExiste :: String -> String -> [Filme] -> Bool
 verificaSeExiste _ _ [] = False
@@ -257,3 +276,13 @@ retornaFilmes titulo dataLancamento newNota jaPassou (y:ys)
 
 atualizaNotaUsuario :: Filme -> Float -> Filme
 atualizaNotaUsuario filme novaNota = filme { notaUsuario = novaNota }
+
+csvUsuario :: [String] -> [Filme] -> RepositorioFilmes -> [Filme]
+csvUsuario [] saidaArray _ = saidaArray
+csvUsuario (x:xs) saidaArray rep = csvUsuario xs (saidaArray ++ (returnSegundo (split '_' x) rep)) rep
+
+returnSegundo :: [String] -> RepositorioFilmes -> [Filme]
+returnSegundo (x:xs) rep = getFilme (getRepFilmes rep) x (re xs) 
+
+re :: [String] -> String
+re (x:_) = x
