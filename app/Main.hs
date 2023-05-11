@@ -11,7 +11,7 @@ import Data.Maybe (listToMaybe)
 
 
 
-{-Função de inicialização do projeto. Lê o arquivo IMDB-Movie-Data.csv e , com o resultado da leitura, instancia a função addAll , para que a aplicação siga seu fluxo. -}
+{-Função de inicialização do projeto. Lê o arquivo IMDB-Movie-Data.csv e UserPreferences.csv , com o resultado das leituras, instancia a função addAll , para que a aplicação siga seu fluxo (Filmes e Preferências do usuário são setadas para uso.). -}
 main :: IO ()
 main = do
   putStrLn "---------------------------------------------------------------"
@@ -214,7 +214,7 @@ acoes cmd rep user
 
 
 
-{-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes. Após isso , instância a função opcoes.-}
+{-No início da aplicação , adiciona todos os filmes do arquivo IMDB-Movie-Data.csv no repositório de filmes. Após isso , salva as preferencias do usuário e  instância a função opcoes.-}
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> [String] -> [String] -> [String] -> IO ()
 addAll [x] rep user favoritos watch assistidos = do
   favoritos <- return $ csvUsuario favoritos [] rep
@@ -225,8 +225,6 @@ addAll [x] rep user favoritos watch assistidos = do
   us1 <- saveFilmeWatch watch us
   us2 <- saveFilmeAssistidos assistidos us1
   opcoes rep us2
-  
-
 addAll (x:xs) rep user favoritos watch assistidos = do
   let titulo = x !! 0
       generos = x !! 1

@@ -36,8 +36,8 @@ getFilmesFav (Usuario { filmesFav = fs}) = fs
 getFilmesAssistidos :: Usuario -> [Filme]
 getFilmesAssistidos (Usuario { filmesAssistidos = fa } ) = fa
 
-{-Adicionam itens nas listas de favoritos e watchlist-}
 
+{- Adiciona um filme na lista de desejos do usuário.-}
 addWatch:: Usuario -> Filme -> IO Usuario
 addWatch us filme = do
   if (verificaSeEsta filme (getWatch us)) then do
@@ -47,6 +47,7 @@ addWatch us filme = do
     let watchAtualizado = (filme : getWatch us)
     return us { watchlist = watchAtualizado }
   
+{- Remove um filme na lista de desejos do usuário.-}
 removeWatch :: Usuario -> Filme -> IO Usuario
 removeWatch us filme = do
   if (verificaSeEsta filme (getWatch us)) then do
@@ -56,6 +57,7 @@ removeWatch us filme = do
     putStrLn "O filme não estava na lista de desejos!"
     return us
 
+{- Adiciona um filme na lista de filmes assistidos do usuário.-}
 addAssistidos :: Usuario -> Filme -> IO Usuario
 addAssistidos us filme = do
   if (verificaSeEsta filme (getFilmesAssistidos us)) then do
@@ -65,6 +67,7 @@ addAssistidos us filme = do
     let filmesAssistidos1 = (filme : getFilmesAssistidos us)
     return us { filmesAssistidos = filmesAssistidos1 }
 
+{- Remove um filme na lista de filmes assistidos do usuário.-}
 removeAssistidos :: Usuario -> Filme -> IO Usuario
 removeAssistidos us filme = do
   if (verificaSeEsta filme (getFilmesAssistidos us)) then do
@@ -74,6 +77,27 @@ removeAssistidos us filme = do
     putStrLn "O filme não estava na lista de assistidos!"
     return us
 
+{- Adiciona um filme na lista de filmes favoritos do usuário.-}
+favoritarFilme :: Usuario -> Filme -> IO Usuario
+favoritarFilme us filme = do
+  if (verificaSeEsta filme (getFilmesFav us)) then do
+    putStrLn "Filme já está nos favoritos!"
+    return us
+  else do
+    let filmesFavoritosAtualizados = (filme : getFilmesFav us)
+    return us { filmesFav = filmesFavoritosAtualizados }
+
+{- Remove um filme na lista de filmes favoritos do usuário.-}
+desfavoritarFilme :: Usuario -> Filme -> IO Usuario
+desfavoritarFilme us filme = do
+  if (verificaSeEsta filme (getFilmesFav us)) then do
+    let filmesFavoritosAtualizados = percorreFilme filme (getFilmesFav us)
+    return us { filmesFav = filmesFavoritosAtualizados }
+  else do
+    putStrLn "O filme não estava na lista de favoritos!"
+    return us
+
+{- Adiciona um Ator na lista de atores favoritos do usuário.-}
 favoritarAtor :: Usuario -> String -> IO Usuario
 favoritarAtor us ator = do
   if (verificaSeEstaString ator (getAtores us)) then do
@@ -83,6 +107,13 @@ favoritarAtor us ator = do
     let atoresFavoritosAtualizados = (ator : getAtores us)
     return us { atoresFav = atoresFavoritosAtualizados }
 
+{- Remove um Ator na lista de atores favoritos do usuário.-}
+desfavoritarAtor :: Usuario -> String -> IO Usuario
+desfavoritarAtor us nome = do
+  let atoresFavoritosAtualizados = percorreString nome (getAtores us) 
+  return us { atoresFav = atoresFavoritosAtualizados }
+
+{- Favorita um Gênero na lista de generos favoritos do usuário.-}
 favoritarGenero :: Usuario -> String -> IO Usuario
 favoritarGenero us genero = do
   let generos = ["Action","Adventure","Horror","Animation","Fantasy","Comedy","Biography","Drama","Family","History","Sci-Fi","Thriller","Mystery","Crime","Western","Romance","War","Musical","Music","Sport"];
@@ -97,7 +128,13 @@ favoritarGenero us genero = do
     putStrLn "O gênero é inválido!"
     return us
 
+{- Desfavorita um Gênero na lista de generos favoritos do usuário.-}
+desfavoritarGenero :: Usuario -> String -> IO Usuario
+desfavoritarGenero us genero = do
+  let generosFavoritosAtualizados = percorreString genero (getGeneros us)
+  return us { generosFav = generosFavoritosAtualizados }
 
+{- Favorita um Diretor na lista de diretores favoritos do usuário.-}
 favoritarDiretor :: Usuario -> String -> IO Usuario
 favoritarDiretor us diretor = do
   if (verificaSeEstaString diretor (getDiretores us)) then do
@@ -107,34 +144,7 @@ favoritarDiretor us diretor = do
     let diretoresFavoritosAtualizados = (diretor : getDiretores us)
     return us { diretoresFav = diretoresFavoritosAtualizados }
 
-favoritarFilme :: Usuario -> Filme -> IO Usuario
-favoritarFilme us filme = do
-  if (verificaSeEsta filme (getFilmesFav us)) then do
-    putStrLn "Filme já está nos favoritos!"
-    return us
-  else do
-    let filmesFavoritosAtualizados = (filme : getFilmesFav us)
-    return us { filmesFav = filmesFavoritosAtualizados }
-
-desfavoritarFilme :: Usuario -> Filme -> IO Usuario
-desfavoritarFilme us filme = do
-  if (verificaSeEsta filme (getFilmesFav us)) then do
-    let filmesFavoritosAtualizados = percorreFilme filme (getFilmesFav us)
-    return us { filmesFav = filmesFavoritosAtualizados }
-  else do
-    putStrLn "O filme não estava na lista de favoritos!"
-    return us
-
-desfavoritarAtor :: Usuario -> String -> IO Usuario
-desfavoritarAtor us nome = do
-  let atoresFavoritosAtualizados = percorreString nome (getAtores us) 
-  return us { atoresFav = atoresFavoritosAtualizados }
-  
-desfavoritarGenero :: Usuario -> String -> IO Usuario
-desfavoritarGenero us genero = do
-  let generosFavoritosAtualizados = percorreString genero (getGeneros us)
-  return us { generosFav = generosFavoritosAtualizados }
-  
+{- Desfavorita um Diretor na lista de diretores favoritos do usuário.-}  
 desfavoritarDiretor :: Usuario -> String -> IO Usuario
 desfavoritarDiretor us diretor = do
   let diretoresFavoritosAtualizados = percorreString diretor (getDiretores us)
@@ -152,6 +162,8 @@ percorreFilme filme (h:t)
   | (getTituloFilme h) == (getTituloFilme filme) = t
   | otherwise = [h] ++ percorreFilme filme t
 
+
+{-Função usada para favoritar e desfavoritar os filmes favoritos do usuário. Essa função é necessária pois, caso atribuirmos uma nota a um filme e esse filme estiver em favoritos do usuário, sua nota será atualizada.-}
 atualizarFavoritos :: Usuario -> Filme -> IO Usuario
 atualizarFavoritos user filme = do
   if (verificaSeEsta filme (getFilmesFav user)) then do
@@ -161,6 +173,7 @@ atualizarFavoritos user filme = do
     else do
       return user
 
+{-Função usada para favoritar e desfavoritar os filmes da lista de desejos do usuário. Essa função é necessária pois, caso atribuirmos uma nota a um filme e esse filme estiver na lista de desejos do usuário, sua nota será atualizada.-}
 atualizarWatchList :: Usuario -> Filme -> IO Usuario
 atualizarWatchList user filme = do
   if (verificaSeEsta filme (getWatch user)) then do
@@ -170,6 +183,7 @@ atualizarWatchList user filme = do
     else do
       return user
 
+{-Função usada para favoritar e desfavoritar os filmes da lista de filmes assistidos do usuário. Essa função é necessária pois, caso atribuirmos uma nota a um filme e esse filme estiver na lista de filmes de assistidos do usuário, sua nota será atualizada.-}
 atualizarAssistidos :: Usuario -> Filme -> IO Usuario
 atualizarAssistidos user filme = do
   if (verificaSeEsta filme (getFilmesAssistidos user)) then do
@@ -179,14 +193,18 @@ atualizarAssistidos user filme = do
     else do
       return user
 
+
+{-Salva uma lista de filmes em favoritos do usuário. Usada na inicialização das preferencias do usuário (lidas no UserPreferences.csv.-}
 saveFilmeFavorito :: [Filme] -> Usuario -> IO Usuario
 saveFilmeFavorito [] user = return user
 saveFilmeFavorito (x:xs) user = favoritarFilme user x >>= saveFilmeFavorito xs
 
+{-Salva uma lista de filmes na lista de desejos do usuário. Usada na inicialização das preferencias do usuário (lidas no UserPreferences.csv.-}
 saveFilmeWatch :: [Filme] -> Usuario -> IO Usuario
 saveFilmeWatch [] user = return user
 saveFilmeWatch (x:xs) user = addWatch user x >>= saveFilmeWatch xs
 
+{-Salva uma lista de filmes em filmes assistidos do usuário. Usada na inicialização das preferencias do usuário (lidas no UserPreferences.csv.-}
 saveFilmeAssistidos :: [Filme] -> Usuario -> IO Usuario
 saveFilmeAssistidos [] user = return user
 saveFilmeAssistidos (x:xs) user = addAssistidos user x >>= saveFilmeAssistidos xs
