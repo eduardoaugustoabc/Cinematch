@@ -29,31 +29,27 @@ exibirRep :: RepositorioFilmes -> IO ()
 exibirRep rep = print rep
 
 {-Adiciona um filme no repositório. Usa a função lerCriaFilme para ler os dados do filme e , assim , adicioná-los ao repositório-}
-addFilme :: RepositorioFilmes -> IO RepositorioFilmes
-addFilme rep = do
-  oFilme <- lerCriaFilme
+addFilme :: String -> String -> RepositorioFilmes -> IO RepositorioFilmes
+addFilme titulo dataLancamento rep = do
+  oFilme <- lerCriaFilme titulo dataLancamento
   return (addFilmeRepositorio rep oFilme)
 
 {-Função usada para ler os dados do filme , criar e retornar um filme com os atributos lidos-}
-lerCriaFilme :: IO Filme
-lerCriaFilme = do
-  putStrLn "Digite o nome do filme:"
-  titulo <- getLine
+lerCriaFilme :: String -> String -> IO Filme
+lerCriaFilme titulo dataLancamento = do
   putStrLn "Digite os gêneros do filme (separados por espaço):"
   generos <- getLine
   putStrLn "Digite a descrição do filme:"
   descricao <- getLine
   putStrLn "Digite o nome do diretor do filme:"
   diretor <- getLine
-  putStrLn "Digite os nomes dos atores do filme (separados por espaço):"
+  putStrLn "Digite os nomes dos atores do filme (separados por , ):"
   atores <- getLine
-  putStrLn "Digite o ano de lançamento do filme:"
-  dataLancamento <- getLine
   putStrLn "Digite a duração do filme (em minutos):"
   duracao <- getLine
   putStrLn "Digite a nota do filme no IMDb (entre 0 e 100):"
   notaImdb <- getLine
   putStrLn "Digite a nota do filme na sua opiniao (entre 0.0 e 10.0):"
   notaUsuario <- getLine
-  let filme = criarFilme titulo (split ' ' generos) descricao diretor (split ' ' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
+  let filme = criarFilme titulo (split ' ' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuario :: Float)
   return filme

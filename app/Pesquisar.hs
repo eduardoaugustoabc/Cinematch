@@ -3,13 +3,13 @@ module Pesquisar where
 import Filme
 import RepositorioFilmes
 
-pesquisaPorNome :: [Filme] -> String -> Maybe Filme
-pesquisaPorNome filmes nomeFilme =
-  case filter (ehIgual nomeFilme) filmes of
+pesquisaPorNome :: [Filme] -> String -> Maybe [Filme]
+pesquisaPorNome filmes nome = 
+  case filter (mesmoAno nome) filmes of
     []    -> Nothing
-    (x:_) -> Just x
+    lista -> Just lista
   where
-    ehIgual nome filme = nome == (getTituloFilme filme)
+    mesmoAno nome filme = nome == (getTituloFilme filme)
 
 pesquisaPorGenero :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorGenero filmes genero =
@@ -48,7 +48,13 @@ containsString str list = elem str list
 
 selecaoPesquisa::RepositorioFilmes -> IO()
 selecaoPesquisa rep = do
-  putStrLn "Digite o número de acordo com a pesquisa que deseja fazer:\n1)Nome 2)Gênero 3)Ano 4)Diretor 5) Ator"
+  putStrLn "Digite o número de acordo com a pesquisa que deseja fazer: "
+  putStrLn "1) Nome "
+  putStrLn "2) Gênero "
+  putStrLn "3) Ano "
+  putStrLn "4) Diretor "
+  putStrLn "5) Ator"
+  putStrLn  "Qual sua escolha : "
   cmd <- getLine
   let filmes = getRepFilmes rep
   case cmd of
@@ -58,7 +64,7 @@ selecaoPesquisa rep = do
       let resultado = pesquisaPorNome filmes nome
       case resultado of
         Nothing -> putStrLn "Nenhum filme encontrado."
-        Just filme -> print filme
+        Just filmes -> mapM_ print filmes
     "2" -> do
       putStrLn "Digite o gênero:"
       genero <- getLine

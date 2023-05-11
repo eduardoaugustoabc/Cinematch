@@ -40,28 +40,144 @@ getFilmesAssistidos (Usuario { filmesAssistidos = fa } ) = fa
 
 addWatch:: Usuario -> Filme -> IO Usuario
 addWatch us filme = do
-  let watchAtualizado = (filme : getWatch us)
-  return us { watchlist = watchAtualizado }
+  if (verificaSeEsta filme (getWatch us)) then do
+    putStrLn "O filme já está na lista de desejos!"
+    return us
+  else do
+    let watchAtualizado = (filme : getWatch us)
+    return us { watchlist = watchAtualizado }
+  
+removeWatch :: Usuario -> Filme -> IO Usuario
+removeWatch us filme = do
+  if (verificaSeEsta filme (getWatch us)) then do
+    let watchList = percorreFilme filme (getWatch us)
+    return us { watchlist = watchList }
+  else do
+    putStrLn "O filme não estava na lista de desejos!"
+    return us
+
+addAssistidos :: Usuario -> Filme -> IO Usuario
+addAssistidos us filme = do
+  if (verificaSeEsta filme (getFilmesAssistidos us)) then do
+    putStrLn "O filme já está na lista de assistidos!"
+    return us
+  else do
+    let filmesAssistidos1 = (filme : getFilmesAssistidos us)
+    return us { filmesAssistidos = filmesAssistidos1 }
+
+removeAssistidos :: Usuario -> Filme -> IO Usuario
+removeAssistidos us filme = do
+  if (verificaSeEsta filme (getFilmesAssistidos us)) then do
+    let assistidos = percorreFilme filme (getFilmesAssistidos us)
+    return us { filmesAssistidos = assistidos }
+  else do
+    putStrLn "O filme não estava na lista de assistidos!"
+    return us
 
 favoritarAtor :: Usuario -> String -> IO Usuario
 favoritarAtor us ator = do
-  let atoresFavoritosAtualizados = (ator : getAtores us)
-  return us { atoresFav = atoresFavoritosAtualizados }
+  if (verificaSeEstaString ator (getAtores us)) then do
+    putStrLn "O ator já está na lista de favoritos"
+    return us
+  else do
+    let atoresFavoritosAtualizados = (ator : getAtores us)
+    return us { atoresFav = atoresFavoritosAtualizados }
 
-favoritarGenenero :: Usuario -> String -> IO Usuario
-favoritarGenenero us genero = do
-  let generosFavoritosAtualizados = (genero : getGeneros us)
-  return us { generosFav = generosFavoritosAtualizados }
+favoritarGenero :: Usuario -> String -> IO Usuario
+favoritarGenero us genero = do
+  let generos = ["Action","Adventure","Horror","Animation","Fantasy","Comedy","Biography","Drama","Family","History","Sci-Fi","Thriller","Mystery","Crime","Western","Romance","War","Musical","Music","Sport"];
+  if (verificaSeEstaString genero generos) then do
+    if (verificaSeEstaString genero (getGeneros us)) then do
+      putStrLn "O gênero já está na lista de favoritos"
+      return us
+    else do
+      let generosFavoritosAtualizados = (genero : getGeneros us)
+      return us { generosFav = generosFavoritosAtualizados }
+  else do
+    putStrLn "O gênero é inválido!"
+    return us
+
 
 favoritarDiretor :: Usuario -> String -> IO Usuario
 favoritarDiretor us diretor = do
-  let diretoresFavoritosAtualizados = (diretor : getDiretores us)
-  return us { diretoresFav = diretoresFavoritosAtualizados }
+  if (verificaSeEstaString diretor (getDiretores us)) then do
+    putStrLn "O diretor já está na lista de favoritos!"
+    return us
+  else do
+    let diretoresFavoritosAtualizados = (diretor : getDiretores us)
+    return us { diretoresFav = diretoresFavoritosAtualizados }
 
 favoritarFilme :: Usuario -> Filme -> IO Usuario
 favoritarFilme us filme = do
-  let filmesFavoritosAtualizados = (filme : getFilmesFav us)
-  return us { filmesFav = filmesFavoritosAtualizados }
+  if (verificaSeEsta filme (getFilmesFav us)) then do
+    putStrLn "Filme já está nos favoritos!"
+    return us
+  else do
+    let filmesFavoritosAtualizados = (filme : getFilmesFav us)
+    return us { filmesFav = filmesFavoritosAtualizados }
+
+desfavoritarFilme :: Usuario -> Filme -> IO Usuario
+desfavoritarFilme us filme = do
+  if (verificaSeEsta filme (getFilmesFav us)) then do
+    let filmesFavoritosAtualizados = percorreFilme filme (getFilmesFav us)
+    return us { filmesFav = filmesFavoritosAtualizados }
+  else do
+    putStrLn "O filme não estava na lista de favoritos!"
+    return us
+
+desfavoritarAtor :: Usuario -> String -> IO Usuario
+desfavoritarAtor us nome = do
+  let atoresFavoritosAtualizados = percorreString nome (getAtores us) 
+  return us { atoresFav = atoresFavoritosAtualizados }
+  
+desfavoritarGenero :: Usuario -> String -> IO Usuario
+desfavoritarGenero us genero = do
+  let generosFavoritosAtualizados = percorreString genero (getGeneros us)
+  return us { generosFav = generosFavoritosAtualizados }
+  
+desfavoritarDiretor :: Usuario -> String -> IO Usuario
+desfavoritarDiretor us diretor = do
+  let diretoresFavoritosAtualizados = percorreString diretor (getDiretores us)
+  return us { diretoresFav = diretoresFavoritosAtualizados }
+
+percorreString :: String -> [String] -> [String]
+percorreString nome [] = []
+percorreString nome (h:t) 
+  | h == nome   = percorreString nome t
+  | otherwise   = [h] ++ percorreString nome t
+
+percorreFilme :: Filme -> [Filme] -> [Filme]
+percorreFilme filme [] = []
+percorreFilme filme (h:t) 
+  | (getTituloFilme h) == (getTituloFilme filme) = t
+  | otherwise = [h] ++ percorreFilme filme t
+
+atualizarFavoritos :: Usuario -> Filme -> IO Usuario
+atualizarFavoritos user filme = do
+  if (verificaSeEsta filme (getFilmesFav user)) then do
+      us1 <- desfavoritarFilme user filme
+      us <- favoritarFilme us1 filme
+      return us
+    else do
+      return user
+
+atualizarWatchList :: Usuario -> Filme -> IO Usuario
+atualizarWatchList user filme = do
+  if (verificaSeEsta filme (getWatch user)) then do
+      us1 <- removeWatch user filme
+      us <- addWatch us1 filme
+      return us
+    else do
+      return user
+
+atualizarAssistidos :: Usuario -> Filme -> IO Usuario
+atualizarAssistidos user filme = do
+  if (verificaSeEsta filme (getFilmesAssistidos user)) then do
+      us1 <- removeAssistidos user filme
+      us <- addAssistidos us1 filme
+      return us
+    else do
+      return user
 
 {-Recomendação de filmes. Recebe uma lista de Filmes e de Favoritos do usuário, recebe também as preferências do usuário quanto a genêros, atores e diretor. quantidade representa a quantidade de filmes que devem ser retornados.-}
 
@@ -91,6 +207,12 @@ verificaSeEsta _ [] = False
 verificaSeEsta filme (y:ys)
         | ehIgual filme y = True
         | otherwise = verificaSeEsta filme (ys)
+
+verificaSeEstaString :: String -> [String] -> Bool
+verificaSeEstaString _ [] = False
+verificaSeEstaString preferencia (y:ys)
+        | preferencia == y = True
+        | otherwise = verificaSeEstaString preferencia (ys)
 
 --ok
 {-

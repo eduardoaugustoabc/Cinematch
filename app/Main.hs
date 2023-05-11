@@ -6,6 +6,7 @@ import Usuario
 import Util.Split
 import Persistencia.PersistenciaFilmes
 import Text.CSV
+import Data.Maybe (listToMaybe)
 
 
 
@@ -15,14 +16,19 @@ main = do
   putStrLn "---------------------------------------------------------------"
   putStrLn "                 Bem vindo(a) ao CINEMATCH                     "
   putStrLn "---------------------------------------------------------------"
-  let arquivo = "IMDB-Movie-Data.csv"
-  resultado <- parseCSVFromFile arquivo
-  case resultado of
+  let filmesSCV = "IMDB-Movie-Data.csv"
+  let userPreferences = "UserPreferences.csv"
+  resultadoFilmesCSV <- parseCSVFromFile filmesSCV
+  resultadoUserPreferencesCSV <- parseCSVFromFile userPreferences
+  
+
+
+  case resultadoFilmesCSV of
     Right linhas -> do
       addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = ["Mystery", "sci-fi", "Action", "Adventure", "Biography"]
                        , diretoresFav = ["Tarantino", "Ridley Scott"]
                        , atoresFav = ["Keanu", "Scarlett Johansson", "waltz", "Charlize Theron", "Charlie Hunnam", "Robert Pattinson", "Sienna Miller", "Tom Holland"]
-                       , filmesFav = []
+                       , filmesFav = [] 
                        , watchlist = []
                        , filmesAssistidos = []
                        })           
@@ -36,16 +42,28 @@ opcoes rep user = do
   putStrLn " 2) Favoritar Gênero"
   putStrLn " 3) Favoritar Ator"
   putStrLn " 4) Favoritar Diretor"
-  putStrLn " 5) Recomendação"
-  putStrLn " 6) Lista de diretores favoritos"
-  putStrLn " 7) Lista de filmes que se deseja assistir"
-  putStrLn " 8) Cadastrar Filme"
-  putStrLn " 9) Dashboard"
-  putStrLn " 10) EXIT PROGRAM"
-  putStr "Opção escolhida : "
+  putStrLn " 5) Favoritar Filme"
+  putStrLn " 6) Desfavoritar Filme"
+  putStrLn " 7) Atribuir nota filme"
+  putStrLn " 8) Recomendação"
+  putStrLn " 9) Adicionar filme assistido"
+  putStrLn " 10) Adicionar a lista de desejos"
+  putStrLn " 11) Lista de diretores favoritos"
+  putStrLn " 12) Lista de filmes que se deseja assistir"
+  putStrLn " 13) Lista de generos favoritos"
+  putStrLn " 14) Lista de atores favoritos"
+  putStrLn " 15) Lista de filmes favoritos"
+  putStrLn " 16) Lista de desejos"
+  putStrLn " 17) Cadastrar Filme"
+  putStrLn " 18) Dashboard"
+  putStrLn " 19) Desfavoritar Gênero"
+  putStrLn " 20) Desfavoritar Ator"
+  putStrLn " 21) Desfavoritar Diretor"
+  putStrLn " 22) EXIT PROGRAM"
+  putStrLn "Opção escolhida : "
   opcao <- getLine
   putStrLn "++-----------------------------------------------------------++"
-  if opcao == "10" then do
+  if opcao == "22" then do
     putStrLn "Obrigado por usar o CINEMATCH!"
     salvaFilmesPersistentemente (getRepFilmes rep)
     return ()
@@ -60,39 +78,127 @@ acoes cmd rep user
     selecaoPesquisa rep
     opcoes rep user
   | cmd == "2"     = do
-    putStr "Qual gênero deseja favoritar : "
+    putStrLn "Qual gênero deseja favoritar : Action,Adventure,Horror,Animation,Fantasy,Comedy,Biography,Drama,Family,History,Sci-Fi,Thriller,Mystery,Crime,Western,Romance,War,Musical,Music,Sport"
     com <- getLine
-    us <- (favoritarGenenero user com)
+    us <- (favoritarGenero user com)
     print (getGeneros us)
     opcoes rep us
   | cmd == "3"     = do
-    putStr "Qual ator deseja favoritar : "
+    putStrLn "Qual ator deseja favoritar : "
     com <- getLine
     us <- (favoritarAtor user com)
     print (getAtores us)
     opcoes rep us
   | cmd == "4"     = do
-    putStr "Qual diretor deseja favoritar : "
+    putStrLn "Qual diretor deseja favoritar : "
     com <- getLine
     us <- (favoritarDiretor user com)
     print (getDiretores us)
     opcoes rep us
-  | cmd == "5"     = do
+  | cmd == "5" = do
+    putStrLn "Qual o título do Filme deseja favoritar : "
+    nome <- getLine
+    putStrLn "Qual a data de lançamento do Filme deseja favoritar : "
+    lanc <- getLine
+    let filmes = (getFilme (getRepFilmes rep) nome lanc)
+        filme = listToMaybe filmes
+    us <- maybe (putStrLn "Filme não encontrado" >> return user) (favoritarFilme user) filme
+    print (getFilmesFav us)
+    opcoes rep us
+  | cmd == "6"      = do
+    putStrLn "Qual o título do Filme que deseja desfavoritar : "
+    nome <- getLine
+    putStrLn "Qual a data de lançamento do Filme que deseja desfavoritar : "
+    lanc <- getLine
+    let filmes = getFilme (getRepFilmes rep) nome lanc
+        filme = listToMaybe filmes
+    us <- maybe (putStrLn "Filme não encontrado" >> return user) (desfavoritarFilme user) filme
+    opcoes rep us
+  | cmd == "7"     = do
+    putStrLn "Qual o título do Filme que deseja atributar nota : "
+    titulo <- getLine
+    putStrLn "Qual a data de lançamento do Filme que deseja atributar nota : "
+    dataLancamento <- getLine
+    putStrLn "Qual a nota do filme : "
+    nota <- getLine
+    repo <- return $ mudaNota rep titulo dataLancamento (read nota :: Float)
+    let filme = getFilme (getRepFilmes repo) titulo dataLancamento
+    us <- atualizarFavoritos user (filme !! 0)
+    us1 <- atualizarWatchList us (filme !! 0)
+    us2 <- atualizarAssistidos us1 (filme !! 0)
+    opcoes rep us2
+  | cmd == "8"     = do
+    putStrLn "Quantas recomendações deseja receber : "
     qtd <- readLn :: IO Int
     print(recomenda qtd (getRepFilmes rep) user)
     opcoes rep user
-  | cmd == "6"     = do
+  | cmd == "9"       = do
+    putStrLn "Qual o título do Filme deseja adicionar a lista de assistidos : "
+    nome <- getLine
+    putStrLn "Qual a data de lançamento do Filme deseja adicionar a lista de as : "
+    lanc <- getLine
+    let filmes = (getFilme (getRepFilmes rep) nome lanc)
+        filme = listToMaybe filmes
+    us <- maybe (putStrLn "Filme não encontrado" >> return user) (addAssistidos user) filme
+    print (getFilmesAssistidos us)
+    opcoes rep us
+  | cmd == "10"      = do 
+    putStrLn "Qual o título do Filme deseja adicionar a lista de desejos : "
+    nome <- getLine
+    putStrLn "Qual a data de lançamento do Filme deseja adicionar a lista de desejos : "
+    lanc <- getLine
+    let filmes = (getFilme (getRepFilmes rep) nome lanc)
+        filme = listToMaybe filmes
+    us <- maybe (putStrLn "Filme não encontrado" >> return user) (addWatch user) filme
+    print (getWatch us)
+    opcoes rep us
+  | cmd == "11"     = do
     print(getDiretores user)
     opcoes rep user
-  | cmd == "7"     = do
+  | cmd == "12"     = do
     print(getWatch user)
     opcoes rep user
-  | cmd == "8"     = do
-    repo <- addFilme rep
+  | cmd == "13"     = do
+    print(getGeneros user)
+    opcoes rep user
+  | cmd == "14"     = do
+    print(getAtores user)
+    opcoes rep user
+  | cmd == "15"     = do
+  print(getFilmesFav user)
+  opcoes rep user
+  | cmd == "16"     = do
+    print(getWatch user)
+    opcoes rep user
+  | cmd == "17"     = do
+    putStrLn "Digite o nome do filme:"
+    titulo <- getLine
+    putStrLn "Digite o ano de lançamento do filme:"
+    dataLancamento <- getLine
+    repo <- existe titulo dataLancamento rep
     opcoes repo user
-  | cmd == "9"     = do
+  | cmd == "18"     = do
     putStrLn(dashboardString user)
-  | cmd == "10"    = do
+    opcoes rep user
+  | cmd == "19"     = do
+    putStrLn "Qual gênero deseja desfavoritar : "
+    com <- getLine
+    us <- (desfavoritarGenero user com)
+    print (getGeneros us)
+    opcoes rep us
+  | cmd == "20"     = do
+    putStrLn "Qual ator deseja desfavoritar : "
+    com <- getLine
+    us <- (desfavoritarAtor user com)
+    print (getAtores us)
+    opcoes rep us
+  | cmd == "21"     = do
+    putStrLn "Qual diretor deseja desfavoritar : "
+    com <- getLine
+    us <- (desfavoritarDiretor user com)
+    print (getDiretores us)
+    opcoes rep us
+  | cmd == "22"    = do
     return()
   | otherwise      = do
     putStrLn "Comando inválido ou não implementado até o momento"
@@ -114,3 +220,40 @@ addAll (x:xs) rep user = do
       notaUsuaio = x !! 8
       filme = criarFilme titulo (split ',' generos) descricao diretor (split ',' atores) dataLancamento duracao (read notaImdb :: Int) (read notaUsuaio :: Float)
   addAll xs (addFilmeRepositorio rep filme) user
+
+verificaSeExiste :: String -> String -> [Filme] -> Bool
+verificaSeExiste _ _ [] = False
+verificaSeExiste titulo dataLancamento (y:ys)
+        | jaExiste titulo dataLancamento y = True
+        | otherwise = verificaSeExiste titulo dataLancamento (ys)
+
+jaExiste :: String -> String -> Filme -> Bool
+jaExiste titulo dataLancamento filme = (titulo == getTituloFilme filme) && (dataLancamento == getDataFilme filme)
+
+existe :: String -> String -> RepositorioFilmes -> IO RepositorioFilmes
+existe titulo dataLancamento rep
+  | verificaSeExiste titulo dataLancamento (getRepFilmes rep) = return rep
+  | otherwise = addFilme titulo dataLancamento rep
+
+getFilme :: [Filme] -> String -> String -> [Filme]
+getFilme [] _ _ = []
+getFilme (x:xs) nome lanc
+  | (((getTituloFilme x) == nome) && ((getDataFilme x) == lanc))  = [x]
+  | otherwise                    = getFilme xs nome lanc
+
+
+mudaNota :: RepositorioFilmes -> String -> String -> Float -> RepositorioFilmes
+mudaNota rep titulo dataLancamento nota
+  | verificaSeExiste titulo dataLancamento (getRepFilmes rep) = atualizaNota rep nota titulo dataLancamento 
+  | otherwise = rep
+
+atualizaNota :: RepositorioFilmes -> Float -> String -> String -> RepositorioFilmes
+atualizaNota repo nota titulo dataLancamento = repo { filmes = (retornaFilmes titulo dataLancamento nota [] (getRepFilmes repo)) }
+
+retornaFilmes :: String -> String -> Float -> [Filme] -> [Filme] -> [Filme]
+retornaFilmes titulo dataLancamento newNota jaPassou (y:ys)
+        | jaExiste titulo dataLancamento y = concat [jaPassou, [(atualizaNotaUsuario y newNota)], ys]
+        | otherwise = retornaFilmes titulo dataLancamento newNota (concat [jaPassou, [y]]) (ys)
+
+atualizaNotaUsuario :: Filme -> Float -> Filme
+atualizaNotaUsuario filme novaNota = filme { notaUsuario = novaNota }
