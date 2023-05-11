@@ -3,8 +3,8 @@ module Filme where
 import Data.List (intercalate)
 
 
-{-Tipo Filme. tem todos os itens necessarios de um filme.-}
-
+{-Tipo Filme. Possui todos os itens necessarios para um filme.
+Podem existir filmes de mesmo nome, mas não comaa mesma data.-}
 data Filme = Filme {
   titulo :: String,
   generos :: [String],
@@ -18,7 +18,6 @@ data Filme = Filme {
   }
 
 {-Representação textual do Filme.-}
-
 instance Show Filme where
   show f = "\n-----------------------------" ++
            "\nTítulo: " ++ titulo f ++
