@@ -3,6 +3,7 @@ module Pesquisar where
 import Filme
 import RepositorioFilmes
 
+{-Método usado para pesquisar determinado filme pelo seu nome-}
 pesquisaPorNome :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorNome filmes nome = 
   case filter (mesmoAno nome) filmes of
@@ -11,6 +12,7 @@ pesquisaPorNome filmes nome =
   where
     mesmoAno nome filme = nome == (getTituloFilme filme)
 
+{-Método usado para pesquisar determinado filme pelo seu gênero-}
 pesquisaPorGenero :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorGenero filmes genero =
   case filter (ehDoGenero genero) filmes of
@@ -19,6 +21,7 @@ pesquisaPorGenero filmes genero =
   where
     ehDoGenero genero filme = containsString genero (getGenerosFilme filme)
 
+{-Método usado para pesquisar determinado filme pelo seu ano de lançamento-}
 pesquisaPorAno :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorAno filmes ano = 
   case filter (mesmoAno ano) filmes of
@@ -27,6 +30,7 @@ pesquisaPorAno filmes ano =
   where
     mesmoAno ano filme = ano == (getDataFilme filme)
 
+{-Método usado para pesquisar determinado filme pelo seu diretor-}
 pesquisaPorDiretor :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorDiretor filmes diretor = 
   case filter (mesmoDiretor diretor) filmes of
@@ -35,6 +39,7 @@ pesquisaPorDiretor filmes diretor =
   where
     mesmoDiretor diretor filme = diretor == (getDiretorFilme filme)
 
+{-Método usado para pesquisar determinado filme por um de seus atores-}
 pesquisaPorAtor :: [Filme] -> String -> Maybe [Filme]
 pesquisaPorAtor filmes ator =
   case filter (mesmoAtor ator) filmes of
@@ -43,9 +48,12 @@ pesquisaPorAtor filmes ator =
   where
     mesmoAtor ator filme = containsString ator (getAtoresFilme filme)
 
+{-Método usado para analisar se determinada lista de strings possui uma string específica-}
 containsString :: String -> [String] -> Bool
 containsString str list = elem str list
 
+{-Método usado para adequar a pesquisa de acordo com o quê o usuário quer; funciona como
+algumas funcionalidades do main e trata exceções, como opções inválidas-}
 selecaoPesquisa::RepositorioFilmes -> IO()
 selecaoPesquisa rep = do
   putStrLn "Digite o número de acordo com a pesquisa que deseja fazer: "
