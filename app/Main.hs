@@ -218,7 +218,12 @@ acoes cmd rep user
 addAll :: [[String]] -> RepositorioFilmes -> Usuario -> [String] -> [String] -> [String] -> IO ()
 addAll [x] rep user favoritos watch assistidos = do
   favoritos <- return $ csvUsuario favoritos [] rep
-  opcoes rep =<< saveFilmeFavorito favoritos user
+  watch <- return $ csvUsuario watch [] rep
+  assistidos <- return $ csvUsuario assistidos [] rep
+  us <-  saveFilmeFavorito favoritos user
+  us1 <- saveFilmeWatch watch us
+  us2 <- saveFilmeAssistidos assistidos us1
+  opcoes rep us2
   
 
 addAll (x:xs) rep user favoritos watch assistidos = do
@@ -237,6 +242,14 @@ addAll (x:xs) rep user favoritos watch assistidos = do
 saveFilmeFavorito :: [Filme] -> Usuario -> IO Usuario
 saveFilmeFavorito [] user = return user
 saveFilmeFavorito (x:xs) user = favoritarFilme user x >>= saveFilmeFavorito xs
+
+saveFilmeWatch :: [Filme] -> Usuario -> IO Usuario
+saveFilmeWatch [] user = return user
+saveFilmeWatch (x:xs) user = addWatch user x >>= saveFilmeWatch xs
+
+saveFilmeAssistidos :: [Filme] -> Usuario -> IO Usuario
+saveFilmeAssistidos [] user = return user
+saveFilmeAssistidos (x:xs) user = addAssistidos user x >>= saveFilmeAssistidos xs
 
   
 
