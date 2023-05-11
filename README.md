@@ -49,7 +49,7 @@ cabal run
 <hr />
 
 ```bash
-Versão em haskell = EM ANDAMENTO!
+Versão em haskell = COMPLETO!
 ```
 ```bash
 Versão em Prolog = Em breve
