@@ -9,6 +9,14 @@
 <h2>Como usar</h2>
 <p>Nosso projeto usa o Cabal - um sistema de gerenciamento de pacotes para a linguagen de programação <strong>Haskell</strong>.</p>
 
+<p>Em primeiro lugar :</p>
+
+```bash
+git clone https://github.com/lucaslimasilvafoligem/Cinematch.git
+```
+
+<p>Após isso , navegue para o diretório cinematch e :</p>
+
 <p>Visando evitar possiveis erros , antes de inicializar o projeto ,  digitar no diretório do projeto:</p>
 
 ```bash
