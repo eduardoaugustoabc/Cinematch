@@ -31,9 +31,9 @@ main = do
           filmesAssist = (linhas1 !! 5)
       case resultadoFilmesCSV of
         Right linhas -> do
-          addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = generos
-                            , diretoresFav = diretores
-                            , atoresFav = atores
+          addAll linhas (RepositorioFilmes { filmes = [] }) (Usuario { generosFav = (take (length generos -1) generos)
+                            , diretoresFav = (take (length diretores -1) diretores)
+                            , atoresFav = (take (length atores -1) atores)
                             , filmesFav = [] 
                             , watchlist = []
                             , filmesAssistidos = []
@@ -206,6 +206,7 @@ acoes cmd rep user
     print (getDiretores us)
     opcoes rep us
   | cmd == "22"    = do
+
     return()
   | otherwise      = do
     putStrLn "Comando inválido ou não implementado até o momento"
@@ -220,6 +221,7 @@ addAll [x] rep user favoritos watch assistidos = do
   favoritos <- return $ csvUsuario favoritos [] rep
   watch <- return $ csvUsuario watch [] rep
   assistidos <- return $ csvUsuario assistidos [] rep
+
   us <-  saveFilmeFavorito favoritos user
   us1 <- saveFilmeWatch watch us
   us2 <- saveFilmeAssistidos assistidos us1

@@ -8,7 +8,19 @@ import qualified Data.Vector as V
 
 salvaPreferenciasUsuarioPersistentemente :: [String] -> [String] -> [String] -> [Filme] -> [Filme] -> [Filme] -> IO ()
 salvaPreferenciasUsuarioPersistentemente generos diretores atores favoritos watch assistidos = do
-  let listaDeFilmes = [generos] ++ [diretores] ++ [atores] ++ [["1","2"]] ++ [["1","2","3"]] ++ [["1","2","4"]]
+  saveFavoritos <- return $ parseFilmeTOString favoritos []
+  saveWatch <- return $ parseFilmeTOString watch []
+  saveAssistidos <- return $ parseFilmeTOString assistidos []
+  let listaDeFilmes = concat [[generos], [diretores], [atores], [saveFavoritos], [saveWatch], [saveAssistidos]]
   let novoCSV = Csv.encode listaDeFilmes
   BL.writeFile "UserPreferences.csv" novoCSV
   putStrLn ""
+
+
+
+parseFilmeTOString :: [Filme] -> [String] -> [String]
+parseFilmeTOString [] saidaArray = saidaArray ++ ["_"]
+parseFilmeTOString (x:xs) saidaArray = parseFilmeTOString xs (concat [[(converte x)], saidaArray])
+
+converte :: Filme -> String
+converte filme =  (getTituloFilme filme) ++ "_" ++ (getDataFilme filme)
