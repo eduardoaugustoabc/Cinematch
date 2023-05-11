@@ -172,8 +172,8 @@ acoes cmd rep user
     print(getAtores user)
     opcoes rep user
   | cmd == "15"     = do
-  print(getFilmesFav user)
-  opcoes rep user
+    print(getFilmesFav user)
+    opcoes rep user
   | cmd == "16"     = do
     print(getWatch user)
     opcoes rep user
@@ -206,7 +206,6 @@ acoes cmd rep user
     print (getDiretores us)
     opcoes rep us
   | cmd == "22"    = do
-
     return()
   | otherwise      = do
     putStrLn "Comando inválido ou não implementado até o momento"
