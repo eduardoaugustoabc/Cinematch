@@ -11,7 +11,7 @@ salvaPreferenciasUsuarioPersistentemente generos diretores atores favoritos watc
   saveFavoritos <- return $ parseFilmeTOString favoritos []
   saveWatch <- return $ parseFilmeTOString watch []
   saveAssistidos <- return $ parseFilmeTOString assistidos []
-  let listaDeFilmes = concat [[generos], [diretores], [atores], [saveFavoritos], [saveWatch], [saveAssistidos]]
+  let listaDeFilmes = concat [[generos ++ ["_"]], [diretores ++ ["_"]], [atores ++ ["_"]], [saveFavoritos], [saveWatch], [saveAssistidos]]
   let novoCSV = Csv.encode listaDeFilmes
   BL.writeFile "UserPreferences.csv" novoCSV
   putStrLn ""

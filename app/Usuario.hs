@@ -179,6 +179,18 @@ atualizarAssistidos user filme = do
     else do
       return user
 
+saveFilmeFavorito :: [Filme] -> Usuario -> IO Usuario
+saveFilmeFavorito [] user = return user
+saveFilmeFavorito (x:xs) user = favoritarFilme user x >>= saveFilmeFavorito xs
+
+saveFilmeWatch :: [Filme] -> Usuario -> IO Usuario
+saveFilmeWatch [] user = return user
+saveFilmeWatch (x:xs) user = addWatch user x >>= saveFilmeWatch xs
+
+saveFilmeAssistidos :: [Filme] -> Usuario -> IO Usuario
+saveFilmeAssistidos [] user = return user
+saveFilmeAssistidos (x:xs) user = addAssistidos user x >>= saveFilmeAssistidos xs
+
 {-Recomendação de filmes. Recebe uma lista de Filmes e de Favoritos do usuário, recebe também as preferências do usuário quanto a genêros, atores e diretor. quantidade representa a quantidade de filmes que devem ser retornados.-}
 
 --ok
