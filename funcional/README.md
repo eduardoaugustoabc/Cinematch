@@ -15,22 +15,28 @@
 git clone https://github.com/lucaslimasilvafoligem/Cinematch.git
 ```
 
-<p>Após isso , navegue para o diretório da parte funcional ou lógica. Veja as instruções de como usar cada parte no README.md presente no diretório do tipo de paradigma escolhido</p>
+<p>Após isso , navegue para o diretório funcional e :</p>
 
-<hr />
-<h2>Autores</h2>
-<ul>
-    <li>Gabriel Dantas De Oliveira - 121110669</li>
-    <li>João Pedro Campos Porto - 121110403</li>
-    <li>Eduardo Augusto Andrade Bezerra Cavalcanti - 121110349</li>
-    <li>Lucas de Lima da Silva - 121110517</li>
-    <li>José Arthur Soares Bezerra - 121110566</li>
-</ul>
-<hr />
+<p>Visando evitar possiveis erros , antes de inicializar o projeto ,  digitar no diretório do projeto:</p>
 
 ```bash
-Versão em haskell = COMPLETO!
+Instale o Haskell e o cabal (versão 3.10.1.0)
 ```
+
 ```bash
-Versão em Prolog = Em Andamento!
+cabal update
+```
+
+<p>Em seguida : </p>
+
+```bash
+cabal build
+```
+
+```bash
+cabal run
+```
+
+```bash
+Essa parte do projeto consiste no paradigma funcional.
 ```

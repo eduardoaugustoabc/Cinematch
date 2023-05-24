@@ -7,30 +7,4 @@
 
 <hr />
 <h2>Como usar</h2>
-<p>Nosso projeto usa o Cabal - um sistema de gerenciamento de pacotes para a linguagen de programação <strong>Haskell</strong>.</p>
-
-<p>Em primeiro lugar :</p>
-
-```bash
-git clone https://github.com/lucaslimasilvafoligem/Cinematch.git
-```
-
-<p>Após isso , navegue para o diretório da parte funcional ou lógica. Veja as instruções de como usar cada parte no README.md presente no diretório do tipo de paradigma escolhido</p>
-
-<hr />
-<h2>Autores</h2>
-<ul>
-    <li>Gabriel Dantas De Oliveira - 121110669</li>
-    <li>João Pedro Campos Porto - 121110403</li>
-    <li>Eduardo Augusto Andrade Bezerra Cavalcanti - 121110349</li>
-    <li>Lucas de Lima da Silva - 121110517</li>
-    <li>José Arthur Soares Bezerra - 121110566</li>
-</ul>
-<hr />
-
-```bash
-Versão em haskell = COMPLETO!
-```
-```bash
-Versão em Prolog = Em Andamento!
-```
+<p>Ainda não tem nada aqui!!!!!</p>
