@@ -7,7 +7,6 @@
 
 <hr />
 <h2>Como usar</h2>
-<p>Nosso projeto usa o Cabal - um sistema de gerenciamento de pacotes para a linguagen de programação <strong>Haskell</strong>.</p>
 
 <p>Em primeiro lugar :</p>
 
