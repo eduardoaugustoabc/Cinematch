@@ -1,7 +1,7 @@
 module Pesquisar where
 
 import Filme
-import RepositorioFilmes
+import RepositorioFilmes ( RepositorioFilmes, getRepFilmes )
 
 {-Método usado para pesquisar determinado filme pelo seu nome-}
 pesquisaPorNome :: [Filme] -> String -> Maybe [Filme]
