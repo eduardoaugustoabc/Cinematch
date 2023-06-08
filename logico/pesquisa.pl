@@ -109,8 +109,8 @@ selecaoPesquisa(Filmes) :-
     (
         Cmd = "1" ->
             writeln('Digite o nome do filme:'),
-            read_line_to_string(user_input, Nome),
-            pesquisarFilmesPorTitulo(Nome, Filmes)
+            % read(user_input, Nome),
+            pesquisarFilmesPorTitulo('A Origem', Filmes)
         ; Cmd = "2" ->
             writeln('Digite o gênero:'),
             read_line_to_string(user_input, Genero),

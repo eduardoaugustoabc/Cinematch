@@ -1,70 +1,72 @@
-% Módulo Usuario
+:- dynamic usuario/6.
 
-:- dynamic usuario/1.
-
-% Definição do fato usuário
+% Definição da estrutura de dados para representar um usuário
 usuario(
-    generosFav(Genres),
-    diretoresFav(Directors),
-    atoresFav(Actors),
-    filmesFav(FavoriteMovies),
+    generosFav(GenerosFav),
+    diretoresFav(DiretoresFav),
+    atoresFav(AtoresFav),
+    filmesFav(FilmesFav),
     watchlist(Watchlist),
-    filmesAssistidos(WatchedMovies)
+    filmesAssistidos(FilmesAssistidos)
 ).
 
-% Regras para obter os valores de um usuário
-getWatch(Usuario, Watchlist) :-
-    usuario(_, _, _, _, Watchlist, _).
+% Função auxiliar para mostrar a representação textual de um usuário
+mostrarUsuario(Usuario) :-
+    writeln('----------------------------'),
+    write('Gêneros Favoritos: '),
+    writeln(Usuario.generosFav),
+    write('Diretores Favoritos: '),
+    writeln(Usuario.diretoresFav),
+    write('Atores Favoritos: '),
+    writeln(Usuario.atoresFav),
+    write('Filmes Favoritos: '),
+    writeln(Usuario.filmesFav),
+    write('Watchlist: '),
+    writeln(Usuario.watchlist),
+    write('Filmes Assistidos: '),
+    writeln(Usuario.filmesAssistidos),
+    writeln('----------------------------').
 
-getGeneros(Usuario, Genres) :-
-    usuario(Genres, _, _, _, _, _).
 
-getDiretores(Usuario, Directors) :-
-    usuario(_, Directors, _, _, _, _).
+% Adicionando informações de usuário como fatos
+adicionarGenerosFav(Generos) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
+    append(GenerosFav, Generos, NovosGenerosFav),
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(NovosGenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos))),
+    writeln('Gêneros favoritos adicionados com sucesso!').
 
-getAtores(Usuario, Actors) :-
-    usuario(_, _, Actors, _, _, _).
+adicionarDiretoresFav(Diretores) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
+    append(DiretoresFav, Diretores, NovosDiretoresFav),
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(GenerosFav), diretoresFav(NovosDiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos))),
+    writeln('Diretores favoritos adicionados com sucesso!').
 
-getFilmesFav(Usuario, FavoriteMovies) :-
-    usuario(_, _, _, FavoriteMovies, _, _).
+adicionarAtoresFav(Atores) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
+    append(AtoresFav, Atores, NovosAtoresFav),
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(NovosAtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos))),
+    writeln('Atores favoritos adicionados com sucesso!').
 
-getFilmesAssistidos(Usuario, WatchedMovies) :-
-    usuario(_, _, _, _, _, WatchedMovies).
+adicionarFilmesFav(Filmes) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
+    append(FilmesFav, Filmes, NovosFilmesFav),
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(NovosFilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos))),
+    writeln('Filmes favoritos adicionados com sucesso!').
 
-% Regras para adicionar e remover filmes da watchlist
-addWatch(Usuario, Filme, NovoUsuario) :-
-    getWatch(Usuario, Watchlist),
-    \+ member(Filme, Watchlist),
+adicionarFilmeNaWatchlist(Filme) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
     append(Watchlist, [Filme], NovaWatchlist),
-    retract(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, WatchedMovies)),
-    assert(usuario(Genres, Directors, Actors, FavoriteMovies, NovaWatchlist, WatchedMovies)),
-    NovoUsuario = usuario(Genres, Directors, Actors, FavoriteMovies, NovaWatchlist, WatchedMovies).
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(NovaWatchlist), filmesAssistidos(FilmesAssistidos))),
+    writeln('Filme adicionado à watchlist com sucesso!').
 
-removeWatch(Usuario, Filme, NovoUsuario) :-
-    getWatch(Usuario, Watchlist),
-    member(Filme, Watchlist),
-    delete(Watchlist, Filme, NovaWatchlist),
-    retract(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, WatchedMovies)),
-    assert(usuario(Genres, Directors, Actors, FavoriteMovies, NovaWatchlist, WatchedMovies)),
-    NovoUsuario = usuario(Genres, Directors, Actors, FavoriteMovies, NovaWatchlist, WatchedMovies).
-
-% Regras para adicionar e remover filmes da lista de filmes assistidos
-addAssistidos(Usuario, Filme, NovoUsuario) :-
-    getFilmesAssistidos(Usuario, WatchedMovies),
-    \+ member(Filme, WatchedMovies),
-    append(WatchedMovies, [Filme], NovaWatchedMovies),
-    retract(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, WatchedMovies)),
-    assert(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, NovaWatchedMovies)),
-    NovoUsuario = usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, NovaWatchedMovies).
-
-removeAssistidos(Usuario, Filme, NovoUsuario) :-
-    getFilmesAssistidos(Usuario, WatchedMovies),
-    member(Filme, WatchedMovies),
-    delete(WatchedMovies, Filme, NovaWatchedMovies),
-    retract(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, WatchedMovies)),
-    assert(usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, NovaWatchedMovies)),
-    NovoUsuario = usuario(Genres, Directors, Actors, FavoriteMovies, Watchlist, NovaWatchedMovies).
-
-% Regras para adicionar e remover filmes da lista de filmes favoritos
-favoritarFilme(Usuario, Filme, NovoUsuario) :-
-    getFilmesFav(Usuario,
+adicionarFilmeAssistido(Filme) :-
+    usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(FilmesAssistidos)),
+    append(FilmesAssistidos, [Filme], NovosFilmesAssistidos),
+    retract(usuario(_, _, _, _, _, _)),
+    assertz(usuario(generosFav(GenerosFav), diretoresFav(DiretoresFav), atoresFav(AtoresFav), filmesFav(FilmesFav), watchlist(Watchlist), filmesAssistidos(NovosFilmesAssistidos))),
+    writeln('Filme adicionado à lista de filmes assistidos com sucesso!').
