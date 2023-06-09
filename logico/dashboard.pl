@@ -58,7 +58,6 @@ somaNotas([Nota|Notas], Soma) :-
 
 
 
-
 mediaGenero :-
     writeln('+ Média Dos Filmes Assistidos por Gêneros :'),
     recuperarFilmesAssistidos(Filmes),
