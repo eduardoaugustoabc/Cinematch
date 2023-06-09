@@ -1,95 +1,79 @@
-:- dynamic filme/9.
-
-% Predicado para atribuir uma nota ao filme com base nas preferências do usuário
-atribuiNota(Filme, GenerosFavoritos, DiretoresFavoritos, AtoresFavoritos, Nota) :-
-    filme{
-        titulo: _,
-        generos: Generos,
-        descricao: _,
-        diretor: Diretor,
-        atores: Atores,
-        dataLancamento: _,
-        duracao: _,
-        notaImdb: _,
-        notaUsuario: _
-    } = Filme,
-    intersect(GenerosFavoritos, Generos, GenerosIntersectados),
-    length(GenerosIntersectados, NumGenerosIntersectados),
-    length(GenerosFavoritos, NumGenerosFavoritos),
-    (
-        NumGenerosFavoritos > 0,
-        GeneroScore is NumGenerosIntersectados / NumGenerosFavoritos
-    ;
-        GeneroScore is 0
-    ),
-    member(Diretor, DiretoresFavoritos),
-    DiretorScore is 1,
-    intersect(AtoresFavoritos, Atores, AtoresIntersectados),
-    length(AtoresIntersectados, NumAtoresIntersectados),
-    length(AtoresFavoritos, NumAtoresFavoritos),
-    (
-        NumAtoresFavoritos > 0,
-        AtorScore is NumAtoresIntersectados / NumAtoresFavoritos
-    ;
-        AtorScore is 0
-    ),
-    Nota is GeneroScore + DiretorScore + AtorScore.
-
-% Predicado para recomendar uma quantidade de filmes com base nas preferências do usuário
-recomenda(Quantidade, FilmesRecomendados) :-
-    recuperarTodosFilmes(FilmesRepositorio),
-    recuperarGenerosFavoritos(GenerosFavoritos),
+recomendarFilmesComNota(Recomendacoes) :-
+    recuperarTodosFilmes(Filmes),
     recuperarDiretoresFavoritos(DiretoresFavoritos),
+    recuperarGenerosFavoritos(GenerosFavoritos),
     recuperarAtoresFavoritos(AtoresFavoritos),
-    findall(
-        Filme,
-        (
-            member(Filme, FilmesRepositorio),
-            \+ filmeFavorito(Filme.titulo, Filme.dataLancamento),
-            atribuiNota(Filme, GenerosFavoritos, DiretoresFavoritos, AtoresFavoritos, Nota),
-            Filme = Filme{notaUsuario: Nota}
-        ),
-        FilmesNaoRecomendados
-    ),
-    predsort(compareFilmes, FilmesNaoRecomendados, FilmesOrdenados),
-    filtrarRecomendados(FilmesOrdenados, [], FilmesRecomendados),
-    length(FilmesRecomendados, NumFilmesRecomendados),
-    min(Quantidade, NumFilmesRecomendados, NumFilmesRecomendadosReais),
-    take(NumFilmesRecomendadosReais, FilmesRecomendados, FilmesRecomendados).
 
-% Função auxiliar para comparar filmes com base na nota do usuário
-compareFilmes(Order, Filme1, Filme2) :-
-    (
-        Filme1.notaUsuario < Filme2.notaUsuario,
-        Order = <
-    ;
-        Filme1.notaUsuario > Filme2.notaUsuario,
-        Order = >
-    ;
-        Order = =
+    findall(
+        filme{
+            titulo: Titulo,
+            generos: Generos,
+            descricao: Descricao,
+            diretor: Diretor,
+            atores: Atores,
+            dataLancamento: DataLancamento,
+            duracao: Duracao,
+            notaImdb: NotaImdb,
+            notaUsuario: NotaUsuario
+        },
+        (
+            member(Filme, Filmes),
+            Filme = filme{
+                titulo: Titulo,
+                generos: Generos,
+                descricao: Descricao,
+                diretor: Diretor,
+                atores: Atores,
+                dataLancamento: DataLancamento,
+                duracao: Duracao,
+                notaImdb: NotaImdb,
+                notaUsuario: NotaUsuario
+            },
+            (
+                member(Diretor, DiretoresFavoritos)
+                ; member(Genero, GenerosFavoritos)
+                ; member(Ator, AtoresFavoritos)
+            )
+        ),
+        FilmesRelevantes
+    ),
+
+    calcularNotasRecomendacao(FilmesRelevantes, FilmesComNota),
+    ordenarFilmesPorNotaRecomendacao(FilmesComNota, FilmesOrdenados),
+    formatarRecomendacoes(FilmesOrdenados, 5, Recomendacoes).
+
+% Função para calcular a nota de recomendação para cada filme
+calcularNotasRecomendacao([], []).
+calcularNotasRecomendacao([Filme | FilmesRestantes], [FilmeComNota | FilmesComNotaRestantes]) :-
+    calcularNotaRecomendacao(Filme, NotaRecomendacao),
+    FilmeComNota = Filme.put(notaRecomendacao, NotaRecomendacao),
+    calcularNotasRecomendacao(FilmesRestantes, FilmesComNotaRestantes).
+
+% Função para calcular a nota de recomendação de um filme
+calcularNotaRecomendacao(Filme, NotaRecomendacao) :-
+    % Lógica para calcular a nota de recomendação do filme
+    % Aqui você pode definir sua própria lógica para atribuir a nota de recomendação
+
+    % Exemplo: Atribuindo uma nota aleatória entre 1 e 10
+    random_between(1, 10, NotaRecomendacao).
+
+% Função auxiliar para ordenar os filmes por nota de recomendação
+ordenarFilmesPorNotaRecomendacao(Filmes, FilmesOrdenados) :-
+    predsort(compararNotaRecomendacao, Filmes, FilmesOrdenados).
+
+% Função auxiliar para comparar a nota de recomendação de dois filmes
+compararNotaRecomendacao(Resultado, Filme1, Filme2) :-
+    (   Filme1.notaRecomendacao < Filme2.notaRecomendacao ->
+        Resultado = '>'
+    ;   Filme1.notaRecomendacao > Filme2.notaRecomendacao ->
+        Resultado = '<'
+    ;   Resultado = '='
     ).
 
-% Função auxiliar para filtrar os filmes recomendados
-filtrarRecomendados([], FilmesRecomendados, FilmesRecomendados).
-filtrarRecomendados([Filme|Filmes], FilmesRecomendadosParcial, FilmesRecomendados) :-
-    (
-        \+ member(Filme, FilmesRecomendadosParcial),
-        append(FilmesRecomendadosParcial, [Filme], FilmesRecomendadosAtualizado)
-    ;
-        FilmesRecomendadosAtualizado = FilmesRecomendadosParcial
-    ),
-    filtrarRecomendados(Filmes, FilmesRecomendadosAtualizado, FilmesRecomendados).
-
-% Função auxiliar para obter os primeiros N elementos de uma lista
-take(N, _, Xs) :- N =< 0, !, N =:= 0, Xs = [].
-take(_, [], []).
-take(N0, [X|Xs], [X|Ys]) :- N0 > 0, N is N0 - 1, take(N, Xs, Ys).
-
-% Função auxiliar para obter o mínimo entre dois valores
-min(X, Y, X) :- X =< Y.
-min(X, Y, Y) :- X > Y.
-
-% Função auxiliar para encontrar a interseção de duas listas
-intersect([], _, []).
-intersect([X|Xs], Ys, [X|Zs]) :- member(X, Ys), intersect(Xs, Ys, Zs).
-intersect([X|Xs], Ys, Zs) :- \+ member(X, Ys), intersect(Xs, Ys, Zs).
+% Função auxiliar para formatar as recomendações
+formatarRecomendacoes([], _, []).
+formatarRecomendacoes(_, 0, []).
+formatarRecomendacoes([Filme | FilmesRestantes], N, [Recomendacao | RecomendacoesRestantes]) :-
+    Recomendacao = Filme.put(notaRecomendacao, Filme.notaRecomendacao),
+    N1 is N - 1,
+    formatarRecomendacoes(FilmesRestantes, N1, RecomendacoesRestantes).
