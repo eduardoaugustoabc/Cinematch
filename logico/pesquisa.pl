@@ -96,7 +96,6 @@ pesquisarFilmesPorGenero(Genero, Filmes) :-
 
 
 
-
 selecaoPesquisa(Filmes) :-
     writeln('Digite o número de acordo com a pesquisa que deseja fazer:'),
     writeln('1) Nome'),
@@ -105,27 +104,33 @@ selecaoPesquisa(Filmes) :-
     writeln('4) Diretor'),
     writeln('5) Ator'),
     writeln('Qual sua escolha: '),
-    read_line_to_string(user_input, Cmd),
+    read_line_to_string(user_input, CmdString),
+    atom_number(CmdString, Cmd),
     (
-        Cmd = "1" ->
+        Cmd = 1 ->
             writeln('Digite o nome do filme:'),
-            % read(user_input, Nome),
-            pesquisarFilmesPorTitulo('A Origem', Filmes)
-        ; Cmd = "2" ->
+            read_line_to_string(user_input, NomeInput),
+            atom_string(Nome, NomeInput),
+            pesquisarFilmesPorTitulo(Nome, Filmes)
+        ; Cmd = 2 ->
             writeln('Digite o gênero:'),
-            read_line_to_string(user_input, Genero),
+            read_line_to_string(user_input, NomeInput),
+            atom_string(Genero, NomeInput),
             pesquisarFilmesPorGenero(Genero, Filmes)
-        ; Cmd = "3" ->
+        ; Cmd = 3 ->
             writeln('Digite o ano:'),
-            read_line_to_string(user_input, Ano),
+            read(Ano),
             pesquisarFilmesPorDataLancamento(Ano, Filmes)
-        ; Cmd = "4" ->
+
+        ; Cmd = 4 ->
             writeln('Digite o Diretor:'),
-            read_line_to_string(user_input, Diretor),
+            read_line_to_string(user_input, NomeInput),
+            atom_string(Diretor, NomeInput),
             pesquisarFilmesPorDiretor(Diretor, Filmes)
-        ; Cmd = "5" ->
+        ; Cmd = 5 ->
             writeln('Digite o Ator:'),
-            read_line_to_string(user_input, Ator),
+            read_line_to_string(user_input, NomeInput),
+            atom_string(Ator, NomeInput),
             pesquisarFilmesPorAtor(Ator, Filmes)
         ; writeln('Opção inválida.'),
           fail % falha para sair do predicado se a opção for inválida

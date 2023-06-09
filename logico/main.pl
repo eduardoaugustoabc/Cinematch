@@ -1,7 +1,9 @@
 :- consult('filme.pl').
 :- consult('pesquisa.pl').
+:- consult('usuario.pl').
 
 main :-
+    % filmes criados para testes
     adicionarFilmePorParametros('O Poderoso Chefão', ['Crime', 'Drama'], 'Um chefão da máfia luta para manter seu império.', 'Francis Ford Coppola', ['Marlon Brando', 'Al Pacino', 'James Caan'], 1972, 175, 9.2, 9.1),
     adicionarFilmePorParametros('Interestelar', ['Ficção científica', 'Drama'], 'Um grupo de astronautas viaja através de um buraco de minhoca em busca de um novo planeta para habitar.', 'Christopher Nolan', ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'], 2002, 169, 8.6, 8.5),
     adicionarFilmePorParametros('Matrix', ['Ação', 'Ficção científica'], 'Um hacker descobre que a realidade em que vive é uma simulação criada por máquinas.', 'Lana Wachowski', ['Keanu Reeves', 'Laurence Fishburne', 'Carrie-Anne Moss'], 1999, 136, 8.7, 8.8),
@@ -12,9 +14,8 @@ main :-
     adicionarFilmePorParametros('O Labirinto do Fauno', ['Fantasia', 'Drama'], 'Uma garota escapa para um mundo fantástico durante a Guerra Civil Espanhola.', 'Guillermo del Toro', ['Ivana Baquero', 'Sergi López', 'Leandro Firmino', 'Maribel Verdú'], 2006, 118, 8.2, 8.4),
     adicionarFilmePorParametros('Cidade de Deus', ['Crime', 'Drama'], 'A história de diversos personagens envolvidos no crime organizado em uma favela do Rio de Janeiro.', 'Fernando Meirelles', ['Alexandre Rodrigues', 'Leandro Firmino', 'Phellipe Haagensen'], 2002, 130, 8.6, 8.5),
     adicionarFilmePorParametros('A Viagem de Chihiro', ['Animação', 'Aventura'], 'Uma menina se aventura em um mundo mágico para resgatar seus pais transformados em porcos.', 'Hayao Miyazaki', ['Rumi Hiiragi', 'Miyu Irino', 'Mari Natsuki'], 2001, 125, 8.6, 8.5),
-    selecaoPesquisa(Resultado),
-    percorrerFilmes(Resultado),
-    writeln("Ok").
+    selecaoPesquisa(Filmes),
+    writeln(Filmes).
 
 percorrerFilmes([]).
 percorrerFilmes([Filme|Resto]) :-
