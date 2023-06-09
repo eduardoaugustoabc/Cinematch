@@ -20,8 +20,9 @@ main :-
     adicionarFilmeAssistido('Interestelar', 2002),
     adicionarGeneroFavorito('Ação'),
     adicionarGeneroFavorito('Drama'),
-    recomenda(3, Recomendados),
-    writeln(Recomendados),
+    adicionarGeneroFavorito('Aventura'),
+    adicionarGeneroFavorito('Fantasia'),
+    recomendarFilmesComNota(Recomendados),
     percorrerFilmes(Recomendados).
 
 
