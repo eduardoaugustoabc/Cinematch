@@ -31,8 +31,8 @@ recomendarFilmesComNota(Recomendacoes) :-
             },
             (
                 member(Diretor, DiretoresFavoritos)
-                ; member(Genero, GenerosFavoritos)
-                ; member(Ator, AtoresFavoritos)
+                ; member(_, GenerosFavoritos)
+                ; member(_, AtoresFavoritos)
             )
         ),
         FilmesRelevantes
@@ -41,6 +41,8 @@ recomendarFilmesComNota(Recomendacoes) :-
     calcularNotasRecomendacao(FilmesRelevantes, FilmesComNota),
     ordenarFilmesPorNotaRecomendacao(FilmesComNota, FilmesOrdenados),
     formatarRecomendacoes(FilmesOrdenados, 5, Recomendacoes).
+
+
 
 % Função para calcular a nota de recomendação para cada filme
 calcularNotasRecomendacao([], []).
@@ -51,11 +53,42 @@ calcularNotasRecomendacao([Filme | FilmesRestantes], [FilmeComNota | FilmesComNo
 
 % Função para calcular a nota de recomendação de um filme
 calcularNotaRecomendacao(Filme, NotaRecomendacao) :-
-    % Lógica para calcular a nota de recomendação do filme
-    % Aqui você pode definir sua própria lógica para atribuir a nota de recomendação
+    Filme = filme{
+        titulo: _,
+        generos: Generos,
+        descricao: _,
+        diretor: _,
+        atores: Atores,
+        dataLancamento: _,
+        duracao: _,
+        notaImdb: NotaImdb,
+        notaUsuario: NotaUsuario
+    },
 
-    % Exemplo: Atribuindo uma nota aleatória entre 1 e 10
-    random_between(1, 10, NotaRecomendacao).
+    recuperarGenerosFavoritos(GenerosFavoritos),
+    recuperarAtoresFavoritos(AtoresFavoritos),
+
+    % Define os pesos para a média ponderada
+    PesoImdb is 3,
+    PesoUsuario is 6,
+
+    countInArray(Generos, GenerosFavoritos, CountGeneros),
+    PesoGeneros is CountGeneros * 1.5,
+
+    countInArray(Atores, AtoresFavoritos, CountAtores),
+    PesoAtores is CountAtores * 0.5,
+
+    % Calcula a nota de recomendação usando a média ponderada
+    NotaRecomendacao is (NotaImdb * PesoImdb) + (NotaUsuario * PesoUsuario) + PesoGeneros + PesoAtores.
+
+% Função auxiliar para contar a ocorrência de um elemento em uma lista
+countInArray([], _, 0).
+countInArray([X|Resto], Array, Count) :-
+    member(X, Array),
+    countInArray(Resto, Array, CountResto),
+    Count is CountResto + 1.
+countInArray([_|Resto], Array, Count) :-
+    countInArray(Resto, Array, Count).
 
 % Função auxiliar para ordenar os filmes por nota de recomendação
 ordenarFilmesPorNotaRecomendacao(Filmes, FilmesOrdenados) :-
