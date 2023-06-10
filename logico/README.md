@@ -7,4 +7,4 @@
 
 <hr />
 <h2>Como usar</h2>
-<p>Ainda não tem nada aqui!!!!!</p>
+<p>Nada Aqui!!!</p>

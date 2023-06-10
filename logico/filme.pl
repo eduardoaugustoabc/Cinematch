@@ -1,5 +1,6 @@
 % Definição de uma estrutura de dados para representar um filme
 :- dynamic filme/9.
+:- use_module(library(http/json)).
 
 % Função auxiliar para mostrar a representação textual de um filme
 mostrarFilme(Filme) :-
@@ -114,6 +115,20 @@ adicionarFilme :-
             writeln('--------Digites os dados NOVAMENTE--------'),
             adicionarFilme  % Chama novamente o predicado para continuar a execução
     ),
+    
+    ObjetoJSON = json{titulo:Titulo, generos:GenerosString, descricao:Descricao, diretor:Diretor, atores:AtoresString, lancamento:DataLancamento, duracao:Duracao, nimdb:NotaImdb, nuser:NotaUsuario},
+    open("novosdados.json", read, ReadStream),
+    json_read_dict(ReadStream, JSONExistente),
+    close(ReadStream),
+    write(JSONExistente),
+    write(ObjetoJSON),
+    append(JSONExistente,[ObjetoJSON],NovoJSON), 
+    write(NovoJSON),
+    open("novosdados.json", write, WriteStream),
+    json_write_dict(WriteStream, NovoJSON),
+    close(WriteStream),
+    
+
     assertz(filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario)),
     writeln('Filme adicionado com sucesso!').
 
@@ -165,3 +180,8 @@ recuperarTodosFilmes(Filmes) :-
 recuperaFilmePorTituloData(Titulo, DataLancamento, Filme) :-
     filme(Titulo, _, _, _, _, DataLancamento, _, _, _),
     recuperarFilmePorTitulo(Titulo, Filme).
+
+
+lerJSON(FilePath, File) :-
+    open(FilePath, read, F),
+    json_read_dict(F, File).
