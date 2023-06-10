@@ -53,6 +53,7 @@ pesquisarFilmesPorDataLancamento(DataLancamento, Filmes) :-
     ).
 
 % Método usado para pesquisar determinado filme por um de seus atores
+% Método usado para pesquisar determinado filme por um de seus atores
 pesquisarFilmesPorAtor(Ator, Filmes) :-
     findall(
         filme{
@@ -109,8 +110,7 @@ selecaoPesquisa(Filmes) :-
     (
         Cmd = 1 ->
             writeln('Digite o nome do filme:'),
-            read_line_to_string(user_input, NomeInput),
-            atom_string(Nome, NomeInput),
+            read_line_to_string(user_input, Nome),
             pesquisarFilmesPorTitulo(Nome, Filmes)
         ; Cmd = 2 ->
             writeln('Digite o gênero:'),
@@ -121,11 +121,9 @@ selecaoPesquisa(Filmes) :-
             writeln('Digite o ano:'),
             read(Ano),
             pesquisarFilmesPorDataLancamento(Ano, Filmes)
-
         ; Cmd = 4 ->
             writeln('Digite o Diretor:'),
-            read_line_to_string(user_input, NomeInput),
-            atom_string(Diretor, NomeInput),
+            read_line_to_string(user_input, Diretor),
             pesquisarFilmesPorDiretor(Diretor, Filmes)
         ; Cmd = 5 ->
             writeln('Digite o Ator:'),
