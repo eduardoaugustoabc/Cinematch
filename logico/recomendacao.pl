@@ -78,7 +78,7 @@ calcularNotaRecomendacao(Filme, NotaRecomendacao) :-
     countInArray(Atores, AtoresFavoritos, CountAtores),
     PesoAtores is CountAtores * 0.5,
 
-    % Calcula a nota de recomendação usando a média ponderada e atributos semelhantes.
+    % Calcula a nota de recomendação usando a média ponderada
     NotaRecomendacao is (NotaImdb * PesoImdb) + (NotaUsuario * PesoUsuario) + PesoGeneros + PesoAtores.
 
 % Função auxiliar para contar a ocorrência de um elemento em uma lista
