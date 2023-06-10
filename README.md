@@ -31,5 +31,5 @@ git clone https://github.com/lucaslimasilvafoligem/Cinematch.git
 Versão em haskell = COMPLETO!
 ```
 ```bash
-Versão em Prolog = Em Andamento!
+Versão em Prolog = Em Andamento! (90%).
 ```
