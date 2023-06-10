@@ -141,8 +141,11 @@ verificaEhInteiroNaoNegativo(Input) :-
 
 
 
-adicionarFilmePorParametros(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario) :-
-    assertz(filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario)).
+adicionarFilmePorParametros(Titulo, [H|_], Descricao, Diretor, [Atores|_], DataLancamento, Duracao, NotaImdb, NotaUsuario) :-
+    atomic_list_concat(Parts, ',', H),
+    atomic_list_concat(Natores, ',', Atores),
+    assertz(filme(Titulo, Parts, Descricao, Diretor, Natores, DataLancamento, Duracao, NotaImdb, NotaUsuario)).
+    
 
 
 % Recuperando Filmes
