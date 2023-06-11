@@ -1,4 +1,5 @@
 :- module(filme, [
+    filme/9,
     mostrarFilme/1,
     getTituloFilme/2,
     getGenerosFilme/2,
