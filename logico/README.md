@@ -7,4 +7,6 @@
 
 <hr />
 <h2>Como usar</h2>
-<p>Nada Aqui!!!</p>
+<p>Navegue até a parte logica e inicie seu terminal prolog.</p>
+
+<p>Após isso : </p>
