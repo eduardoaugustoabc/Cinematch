@@ -1,10 +1,30 @@
+:- module(usuario, [
+    adicionarDiretorFavorito/1,
+    removerDiretorFavorito/1,
+    recuperarDiretoresFavoritos/1,
+    adicionarGeneroFavorito/1,
+    removerGeneroFavorito/1,
+    recuperarGenerosFavoritos/1,
+    adicionarAtorFavorito/1,
+    removerAtorFavorito/1,
+    recuperarAtoresFavoritos/1,
+    adicionarFilmeFavorito/2,
+    removerFilmeFavorito/2,
+    recuperarFilmesFavoritos/1,
+    adicionarFilmeWatchlist/2,
+    removerFilmeWatchlist/2,
+    recuperarFilmesWatchlist/1,
+    adicionarFilmeAssistido/2,
+    removerFilmeAssistido/2,
+    recuperarFilmesAssistidos/1
+]).
+
 :- dynamic diretorFavorito/1.
 :- dynamic generoFavorito/1.
 :- dynamic atorFavorito/1.
 :- dynamic filmeFavorito/2.
 :- dynamic watchlist/2.
 :- dynamic filmesAssistidos/2.
-
 
 % Adicionar diretor favorito
 adicionarDiretorFavorito(Diretor) :-
@@ -18,7 +38,6 @@ removerDiretorFavorito(Diretor) :-
 
 recuperarDiretoresFavoritos(Diretores) :-
     findall(Diretor, diretorFavorito(Diretor), Diretores).
-
 
 % Adicionar gênero favorito
 adicionarGeneroFavorito(Genero) :-
@@ -34,7 +53,6 @@ removerGeneroFavorito(Genero) :-
 recuperarGenerosFavoritos(Generos) :-
     findall(Genero, generoFavorito(Genero), Generos).
 
-
 % Adicionar ator favorito
 adicionarAtorFavorito(Ator) :-
     assertz(atorFavorito(Ator)),
@@ -49,7 +67,6 @@ removerAtorFavorito(Ator) :-
 recuperarAtoresFavoritos(Atores) :-
     findall(Ator, atorFavorito(Ator), Atores).
 
-
 % Adicionar filme favorito
 adicionarFilmeFavorito(Titulo, DataLancamento) :-
     assertz(filmeFavorito(Titulo, DataLancamento)),
@@ -63,7 +80,6 @@ removerFilmeFavorito(Titulo, DataLancamento) :-
 % Recuperar todos os filmes favoritos
 recuperarFilmesFavoritos(Filmes) :-
     findall([Titulo, DataLancamento], filmeFavorito(Titulo, DataLancamento), Filmes).
-
 
 % Adicionar filme à lista de desejos
 adicionarFilmeWatchlist(Titulo, DataLancamento) :-

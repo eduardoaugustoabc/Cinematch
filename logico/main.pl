@@ -1,8 +1,8 @@
-:- consult('filme.pl').
-:- consult('pesquisa.pl').
-:- consult('usuario.pl').
-:- consult('dashboard.pl').
-:- consult('recomendacao.pl').
+:- use_module('./filme.pl').
+:- use_module('./pesquisa.pl').
+:- use_module('./dashboard.pl').
+:- use_module('./usuario.pl').
+:- use_module('./recomendacao.pl').
 
 main :-
     lerJSON("./csvjson.json", Dados),
@@ -11,13 +11,10 @@ main :-
     percorrerFilmes(Filmes2),
     main.
 
-
-
 percorrerFilmes([]).
 percorrerFilmes([Filme|Resto]) :-
     mostrarFilme(Filme),
     percorrerFilmes(Resto).
-
 
 cadastrarDados([]).
 cadastrarDados([H|T]) :-

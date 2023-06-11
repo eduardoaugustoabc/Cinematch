@@ -1,3 +1,17 @@
+:- module(dashboard, [
+    quantidadeFilmesAssistidos/1,
+    generosMaisAssistidos/1,
+    mediaNotasFilmesAssistidos/1,
+    recuperarNotasFilmes/2,
+    calcularMedia/2,
+    somaNotas/2,
+    mediaGenero/0,
+    calcularMediaPorGeneros/1,
+    getNotasGenero/2,
+    dashboardString/0,
+    formatMediaNotasGeneros/1
+]).
+
 :- use_module(library(pairs)).
 :- dynamic diretorFavorito/1.
 :- dynamic generoFavorito/1.
@@ -25,11 +39,6 @@ recuperarGenerosFilmes(Filmes, Generos) :-
         member(Genero, GenerosFilme)
     ), Generos).
 
-
-
-
-
-
 mediaNotasFilmesAssistidos(Media) :-
     recuperarFilmesAssistidos(Filmes),
     recuperarNotasFilmes(Filmes, Notas),
@@ -55,9 +64,6 @@ somaNotas([Nota|Notas], Soma) :-
     somaNotas(Notas, SomaRestante),
     Soma is Nota + SomaRestante.
 
-
-
-
 mediaGenero :-
     writeln('+ Média Dos Filmes Assistidos por Gêneros :'),
     recuperarFilmesAssistidos(Filmes),
@@ -77,13 +83,6 @@ getNotasGenero([FilmeData|RestoFilmes], [Nota|RestoNotas]) :-
     getNotaUsuario(FilmeData, Nota),
     getNotasGenero(RestoFilmes, RestoNotas).
 
-
-
-
-
-
-
-
 % Gera a string do dashboard
 dashboardString :-
     quantidadeFilmesAssistidos(QuantidadeFilmes),
@@ -98,7 +97,7 @@ dashboardString :-
     mediaGenero,
     writeln('----------------------------------------------------').
 
-% Formata a lista de médias de notas por gênero
+% Formata a lista de medias de notas por gênero
 formatMediaNotasGeneros([]).
 formatMediaNotasGeneros([(Genero, Media)|T]) :-
     format("    ~w: ~2f\n", [Genero, Media]),

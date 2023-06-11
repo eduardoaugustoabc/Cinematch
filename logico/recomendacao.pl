@@ -1,3 +1,5 @@
+:- module(recomendacao, [recomendarFilmesComNota/1]).
+
 recomendarFilmesComNota(Recomendacoes) :-
     recuperarTodosFilmes(Filmes),
     recuperarDiretoresFavoritos(DiretoresFavoritos),
@@ -42,8 +44,6 @@ recomendarFilmesComNota(Recomendacoes) :-
     ordenarFilmesPorNotaRecomendacao(FilmesComNota, FilmesOrdenados),
     formatarRecomendacoes(FilmesOrdenados, 5, Recomendacoes).
 
-
-
 % Função para calcular a nota de recomendação para cada filme
 calcularNotasRecomendacao([], []).
 calcularNotasRecomendacao([Filme | FilmesRestantes], [FilmeComNota | FilmesComNotaRestantes]) :-
@@ -68,7 +68,7 @@ calcularNotaRecomendacao(Filme, NotaRecomendacao) :-
     recuperarGenerosFavoritos(GenerosFavoritos),
     recuperarAtoresFavoritos(AtoresFavoritos),
 
-    % Define os pesos para a média ponderada
+    % Define os pesos para a media ponderada
     PesoImdb is 3,
     PesoUsuario is 6,
 
@@ -78,7 +78,7 @@ calcularNotaRecomendacao(Filme, NotaRecomendacao) :-
     countInArray(Atores, AtoresFavoritos, CountAtores),
     PesoAtores is CountAtores * 0.5,
 
-    % Calcula a nota de recomendação usando a média ponderada
+    % Calcula a nota de recomendação usando a media ponderada
     NotaRecomendacao is (NotaImdb * PesoImdb) + (NotaUsuario * PesoUsuario) + PesoGeneros + PesoAtores.
 
 % Função auxiliar para contar a ocorrência de um elemento em uma lista

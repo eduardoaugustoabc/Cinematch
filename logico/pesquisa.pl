@@ -1,3 +1,12 @@
+:- module(pesquisa, [
+    pesquisarFilmesPorTitulo/2,
+    pesquisarFilmesPorDiretor/2,
+    pesquisarFilmesPorDataLancamento/2,
+    pesquisarFilmesPorAtor/2,
+    pesquisarFilmesPorGenero/2,
+    selecaoPesquisa/1
+]).
+
 % Método usado para pesquisar determinado filme por seu nome
 pesquisarFilmesPorTitulo(Titulo, Filmes) :-
     findall(
@@ -94,8 +103,6 @@ pesquisarFilmesPorGenero(Genero, Filmes) :-
         ),
         Filmes
     ).
-
-
 
 selecaoPesquisa(Filmes) :-
     writeln('Digite o número de acordo com a pesquisa que deseja fazer:'),

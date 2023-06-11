@@ -1,3 +1,21 @@
+:- module(filme, [
+    mostrarFilme/1,
+    getTituloFilme/2,
+    getGenerosFilme/2,
+    getDiretorFilme/2,
+    getAtoresFilme/2,
+    getDataFilme/2,
+    getNotaImdbFilme/2,
+    getNotaUsuario/2,
+    getAtributos/2,
+    adicionarFilme/0,
+    adicionarFilmePorParametros/9,
+    recuperarFilmePorTitulo/2,
+    recuperarTodosFilmes/1,
+    recuperaFilmePorTituloData/3,
+    lerJSON/2
+]).
+
 % Definição de uma estrutura de dados para representar um filme
 :- dynamic filme/9.
 :- use_module(library(http/json)).
@@ -25,7 +43,6 @@ mostrarFilme(Filme) :-
     writeln(Filme.notaUsuario),
     writeln('----------------------------').
 
-
 % Gets de Filmes
 getTituloFilme(Filme, Titulo) :-
     Titulo = Filme.titulo.
@@ -50,7 +67,6 @@ getNotaUsuario(Filme, Nota) :-
 
 getAtributos(Filme, Atributos) :-
     Atributos = [Filme.titulo, Filme.generos, Filme.descricao, Filme.diretor, Filme.atores, Filme.dataLancamento, Filme.duracao, Filme.notaImdb, Filme.notaUsuario].
-
 
 % Adicionando filmes como fatos
 adicionarFilme :-
@@ -127,11 +143,9 @@ adicionarFilme :-
     open("novosdados.json", write, WriteStream),
     json_write_dict(WriteStream, NovoJSON),
     close(WriteStream),
-    
 
     assertz(filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario)),
     writeln('Filme adicionado com sucesso!').
-
     
 verificaEhInteiroNaoNegativo(Input) :-
     atom_string(AtomInput, Input),
@@ -139,15 +153,11 @@ verificaEhInteiroNaoNegativo(Input) :-
     integer(Number),
     Number >= 0.
 
-
-
 adicionarFilmePorParametros(Titulo, [H|_], Descricao, Diretor, [Atores|_], DataLancamento, Duracao, NotaImdb, NotaUsuario) :-
     atomic_list_concat(Parts, ',', H),
     atomic_list_concat(Natores, ',', Atores),
     assertz(filme(Titulo, Parts, Descricao, Diretor, Natores, DataLancamento, Duracao, NotaImdb, NotaUsuario)).
     
-
-
 % Recuperando Filmes
 recuperarFilmePorTitulo(Titulo, Filme) :-
     filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario),
