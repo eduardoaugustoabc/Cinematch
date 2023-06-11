@@ -7,6 +7,8 @@
 main :-
     lerJSON("./csvjson.json", Dados),
     cadastrarDados(Dados),
+    lerJSON("./novosdados.json", Persistencia),
+    cadastrarDados(Persistencia),
     selecaoPesquisa(Filmes2),
     percorrerFilmes(Filmes2),
     main.
