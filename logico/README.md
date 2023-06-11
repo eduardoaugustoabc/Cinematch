@@ -10,9 +10,11 @@
 <p>Navegue até a parte logica e inicie seu terminal prolog.</p>
 
 <p>Após isso : </p>
+
+
 ```bash
-consult('main.pl').
+  consult('main.pl').
 ```
 ```bash
-main.
+  main.
 ```
