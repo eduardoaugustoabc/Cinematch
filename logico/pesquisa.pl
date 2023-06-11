@@ -126,7 +126,8 @@ selecaoPesquisa(Filmes) :-
             pesquisarFilmesPorGenero(Genero, Filmes)
         ; Cmd = 3 ->
             writeln('Digite o ano:'),
-            read(Ano),
+            read_line_to_string(user_input, String),
+            number_string(Ano, String),
             pesquisarFilmesPorDataLancamento(Ano, Filmes)
         ; Cmd = 4 ->
             writeln('Digite o Diretor:'),
