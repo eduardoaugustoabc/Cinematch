@@ -106,7 +106,7 @@ adicionarFilme :-
         ;
             writeln('A duração deve ser um número inteiro não negativo.'),
             writeln('--------Digites os dados NOVAMENTE--------'),
-            adicionarFilme  % Chama novamente o predicado para continuar a execução
+            adicionarFilme, !  % Chama novamente o predicado para continuar a execução
     ),
     write('Nota do IMDb: '),
     read_line_to_string(user_input, NotaImdb),
@@ -118,7 +118,7 @@ adicionarFilme :-
         ;
             writeln('A Nota do IMDB deve ser um número inteiro não negativo.'),
             writeln('--------Digites os dados NOVAMENTE--------'),
-            adicionarFilme  % Chama novamente o predicado para continuar a execução
+            adicionarFilme, !  % Chama novamente o predicado para continuar a execução
     ),
     write('Nota do usuário: '),
     read_line_to_string(user_input, NotaUsuario),
@@ -130,17 +130,14 @@ adicionarFilme :-
         ;
             writeln('A Nota do Usuário deve ser um número inteiro não negativo.'),
             writeln('--------Digites os dados NOVAMENTE--------'),
-            adicionarFilme  % Chama novamente o predicado para continuar a execução
+            adicionarFilme, !  % Chama novamente o predicado para continuar a execução
     ),
     
     ObjetoJSON = json{titulo:Titulo, generos:GenerosString, descricao:Descricao, diretor:Diretor, atores:AtoresString, lancamento:DataLancamento, duracao:Duracao, nimdb:NotaImdb, nuser:NotaUsuario},
     open("novosdados.json", read, ReadStream),
     json_read_dict(ReadStream, JSONExistente),
     close(ReadStream),
-    write(JSONExistente),
-    write(ObjetoJSON),
     append(JSONExistente,[ObjetoJSON],NovoJSON), 
-    write(NovoJSON),
     open("novosdados.json", write, WriteStream),
     json_write_dict(WriteStream, NovoJSON),
     close(WriteStream),

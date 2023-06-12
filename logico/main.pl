@@ -200,7 +200,7 @@ acoes:-
         ; Cmd = 22 ->
             writeln('++---------------------Escolha uma ação----------------------++'),
             writeln('      Obrigado por usar o CINEMATCH         '),
-            writeln('++---------------------Escolha uma ação----------------------++'),
+            writeln('++---------------------Escolha uma ação----------------------++')
         ; writeln('Opção inválida.'),
           fail % falha para sair do predicado se a opção for inválida
     ).
