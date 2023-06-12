@@ -154,7 +154,24 @@ verificaEhInteiroNaoNegativo(Input) :-
 adicionarFilmePorParametros(Titulo, [H|_], Descricao, Diretor, [Atores|_], DataLancamento, Duracao, NotaImdb, NotaUsuario) :-
     atomic_list_concat(Parts, ',', H),
     atomic_list_concat(Natores, ',', Atores),
-    assertz(filme(Titulo, Parts, Descricao, Diretor, Natores, DataLancamento, Duracao, NotaImdb, NotaUsuario)).
+    findall(
+        filme{
+            titulo: Titulo,
+            generos: Parts,
+            descricao: Descricao,
+            diretor: Diretor,
+            atores: Natores,
+            dataLancamento: DataLancamento,
+            duracao: Duracao,
+            notaImdb: NotaImdb,
+            notaUsuario: NotaUsuario
+        },
+        filme(Titulo, Parts, Descricao, Diretor, Natores, DataLancamento, Duracao, NotaImdb, NotaUsuario),
+        Filmes
+    ),
+    length(Filmes, R),
+    (R == 0 -> assertz(filme(Titulo, Parts, Descricao, Diretor, Natores, DataLancamento, Duracao, NotaImdb, NotaUsuario));!).
+
     
 % Recuperando Filmes
 recuperarFilmePorTitulo(Titulo, Filme) :-
