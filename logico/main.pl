@@ -32,22 +32,21 @@ opcoes:-
   writeln('4- Favoritar Diretor'),
   writeln('5- Favoritar Filme'),
   writeln('6- Desfavoritar Filme'),
-  writeln('7- Atribuir nota filme'),
-  writeln('8- Recomendação'),
-  writeln('9- Adicionar filme assistido'),
-  writeln('10- Adicionar a lista de desejos'),
-  writeln('11- Lista de diretores favoritos'),
-  writeln('12- Lista de filmes que se deseja assistir'),
-  writeln('13- Lista de generos favoritos'),
-  writeln('14- Lista de atores favoritos'),
-  writeln('15- Lista de filmes favoritos'),
-  writeln('16- Lista de filmes assistidos'),
-  writeln('17- Cadastrar Filme'),
-  writeln('18- Dashboard'),
-  writeln('19- Desfavoritar Gênero'),
-  writeln('20- Desfavoritar Ator'),
-  writeln('21- Desfavoritar Diretor'),
-  writeln('22- EXIT PROGRAM'),
+  writeln('7- Recomendação'),
+  writeln('8- Adicionar filme assistido'),
+  writeln('9- Adicionar a lista de desejos'),
+  writeln('10- Lista de diretores favoritos'),
+  writeln('11- Lista de filmes que se deseja assistir'),
+  writeln('12- Lista de generos favoritos'),
+  writeln('13- Lista de atores favoritos'),
+  writeln('14- Lista de filmes favoritos'),
+  writeln('15- Lista de filmes assistidos'),
+  writeln('16- Cadastrar Filme'),
+  writeln('17- Dashboard'),
+  writeln('18- Desfavoritar Gênero'),
+  writeln('19- Desfavoritar Ator'),
+  writeln('20- Desfavoritar Diretor'),
+  writeln('21- EXIT PROGRAM'),
   writeln('++-----------------------------------------------------------++'),
   acoes.
 
@@ -107,21 +106,10 @@ acoes:-
             writeln(Filmes),
             opcoes
         ; Cmd = 7 ->
-            writeln('Qual o título do Filme que deseja atributar nota : '),
-            read_line_to_string(user_input, FilmeInput),
-            atom_string(Filme, FilmeInput),
-            writeln('Qual a data de lançamento do Filme que deseja atribuir nota : '),
-            read_line_to_string(user_input, DataInput),
-            atom_string(Data, DataInput),
-            writeln('Qual a nota do filme : '),
-            read_line_to_string(user_input, NotaInput),
-            atom_string(Nota, NotaInput),
-            opcoes
-        ; Cmd = 8 ->
             recomendarFilmesComNota(Recomendacoes),
             percorrerFilmes(Recomendacoes),
             opcoes
-        ; Cmd = 9 ->
+        ; Cmd = 8 ->
             writeln('Qual o título do Filme que deseja adicionar a lista de assistidos : '),
             read_line_to_string(user_input, FilmeInput),
             atom_string(Filme, FilmeInput),
@@ -132,7 +120,7 @@ acoes:-
             recuperarFilmesAssistidos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 10 ->
+        ; Cmd = 9 ->
             writeln('Qual o título do Filme que deseja adicionar a lista de desejos : '),
             read_line_to_string(user_input, FilmeInput),
             atom_string(Filme, FilmeInput),
@@ -143,41 +131,41 @@ acoes:-
             recuperarFilmesWatchlist(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 11 ->
+        ; Cmd = 10 ->
             recuperarDiretoresFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 12 ->
+        ; Cmd = 11 ->
             recuperarFilmesWatchlist(Filmes),
             percorreFilmesFav(Filmes, FilmesOrganizados),
             percorrerFilmes(FilmesOrganizados),
             opcoes
-        ; Cmd = 13 ->
+        ; Cmd = 12 ->
             recuperarGenerosFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 14 ->
+        ; Cmd = 13 ->
             recuperarAtoresFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 15 ->
+        ; Cmd = 14 ->
             recuperarFilmesFavoritos(Filmes),
             percorreFilmesFav(Filmes, FilmesOrganizados),
              percorrerFilmes(FilmesOrganizados),
             opcoes
-        ; Cmd = 16 ->
+        ; Cmd = 15 ->
             recuperarFilmesAssistidos(Filmes),
             percorreFilmesFav(Filmes, FilmesOrganizados),
             percorrerFilmes(FilmesOrganizados),
             writeln(Filmes),
             opcoes
-        ; Cmd = 17 ->
+        ; Cmd = 16 ->
             adicionarFilme,
             opcoes
-        ; Cmd = 18 ->
+        ; Cmd = 17 ->
             dashboardString,
             opcoes
-        ; Cmd = 19 ->
+        ; Cmd = 18 ->
             writeln('Qual gênero deseja desfavoritar: '),
             read_line_to_string(user_input, GenInput),
             atom_string(Genero, GenInput),
@@ -185,7 +173,7 @@ acoes:-
             recuperarGenerosFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 20 ->
+        ; Cmd = 19 ->
             writeln('Qual ator deseja desfavoritar: '),
             read_line_to_string(user_input, AtorInput),
             atom_string(Ator, AtorInput),
@@ -193,7 +181,7 @@ acoes:-
             recuperarAtoresFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 21 ->
+        ; Cmd = 20 ->
             writeln('Qual diretor deseja desfavoritar: '),
             read_line_to_string(user_input, DirInput),
             atom_string(Diretor, DirInput),
@@ -201,7 +189,7 @@ acoes:-
             recuperarDiretoresFavoritos(Filmes),
             writeln(Filmes),
             opcoes
-        ; Cmd = 22 ->
+        ; Cmd = 21 ->
             writeln('++---------------------Escolha uma ação----------------------++'),
             writeln('      Obrigado por usar o CINEMATCH         '),
             writeln('++---------------------Escolha uma ação----------------------++')
