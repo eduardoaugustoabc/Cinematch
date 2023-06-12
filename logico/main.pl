@@ -119,7 +119,7 @@ acoes:-
             opcoes
         ; Cmd = 8 ->
             recomendarFilmesComNota(Recomendacoes),
-            writeln(Recomendacoes),
+            percorrerFilmes(Recomendacoes),
             opcoes
         ; Cmd = 9 ->
             writeln('Qual o título do Filme que deseja adicionar a lista de assistidos : '),
