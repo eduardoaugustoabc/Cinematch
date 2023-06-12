@@ -209,11 +209,12 @@ acoes:-
           fail % falha para sair do predicado se a opção for inválida
     ).
 
-percorreFilmesFav([[Titulo|_]|[]],Filmes):- 
+percorreFilmesFav([[Titulo|[Data|_]]|[]],Filmes):- 
     atom_string(Titulo, TituloInput),
-    pesquisarFilmesPorTitulo(TituloInput,Filmes).
-percorreFilmesFav([[Titulo|_]|T],FilmesF):-
-    percorreFilmesFav(T,FilmesM,Final),
+    atom_number(Data,DataInput),
+    pesquisarFilmesPorTituloeData(TituloInput,DataInput,Filmes).
+percorreFilmesFav([[Titulo|[Data|_]]|T],FilmesF):-
+    percorreFilmesFav(T,Final),
     atom_string(Titulo, TituloInput),
-    pesquisarFilmesPorTitulo(TituloInput,Filmes),
+    pesquisarFilmesPorTituloeData(TituloInput,Data,Filmes),
     append(Filmes,Final,FilmesF).

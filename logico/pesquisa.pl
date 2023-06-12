@@ -4,7 +4,8 @@
     pesquisarFilmesPorDataLancamento/2,
     pesquisarFilmesPorAtor/2,
     pesquisarFilmesPorGenero/2,
-    selecaoPesquisa/1
+    selecaoPesquisa/1,
+    pesquisarFilmesPorTituloeData/3
 ]).
 
 % Método usado para pesquisar determinado filme por seu nome
@@ -101,6 +102,23 @@ pesquisarFilmesPorGenero(Genero, Filmes) :-
             filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario),
             member(Genero, Generos)
         ),
+        Filmes
+    ).
+
+  pesquisarFilmesPorTituloeData(Titulo,DataLancamento, Filmes) :-
+    findall(
+        filme{
+            titulo: Titulo,
+            generos: Generos,
+            descricao: Descricao,
+            diretor: Diretor,
+            atores: Atores,
+            dataLancamento: DataLancamento,
+            duracao: Duracao,
+            notaImdb: NotaImdb,
+            notaUsuario: NotaUsuario
+        },
+        filme(Titulo, Generos, Descricao, Diretor, Atores, DataLancamento, Duracao, NotaImdb, NotaUsuario),
         Filmes
     ).
 
