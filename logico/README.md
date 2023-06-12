@@ -7,13 +7,17 @@
 
 <hr />
 <h2>Como usar</h2>
+
+<p>Baixe a versão de prolog no link: https://www.swi-prolog.org/download/stable.</p>
+
+<p>Baixe a versão SWI-Prolog source for 9.0.4</p>
 <p>Navegue até a parte logica e inicie seu terminal prolog.</p>
 
 <p>Após isso : </p>
 
 
 ```bash
-  consult('main.pl').
+  swipl -s main.pl.
 ```
 ```bash
   main.
