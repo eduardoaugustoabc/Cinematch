@@ -40,8 +40,6 @@ mostrarFilme(Filme) :-
     writeln(Filme.duracao),
     write('Nota do IMDB: '),
     writeln(Filme.notaImdb),
-    write('Nota do usuário: '),
-    writeln(Filme.notaUsuario),
     writeln('----------------------------').
 
 % Gets de Filmes
