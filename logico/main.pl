@@ -41,7 +41,7 @@ opcoes:-
   writeln('13- Lista de generos favoritos'),
   writeln('14- Lista de atores favoritos'),
   writeln('15- Lista de filmes favoritos'),
-  writeln('16- Lista de desejos'),
+  writeln('16- Lista de filmes assistidos'),
   writeln('17- Cadastrar Filme'),
   writeln('18- Dashboard'),
   writeln('19- Desfavoritar Gênero'),
@@ -149,7 +149,8 @@ acoes:-
             opcoes
         ; Cmd = 12 ->
             recuperarFilmesWatchlist(Filmes),
-            writeln(Filmes),
+            percorreFilmesFav(Filmes, FilmesOrganizados),
+            percorrerFilmes(FilmesOrganizados),
             opcoes
         ; Cmd = 13 ->
             recuperarGenerosFavoritos(Filmes),
@@ -161,10 +162,13 @@ acoes:-
             opcoes
         ; Cmd = 15 ->
             recuperarFilmesFavoritos(Filmes),
-            writeln(Filmes),
+            percorreFilmesFav(Filmes, FilmesOrganizados),
+             percorrerFilmes(FilmesOrganizados),
             opcoes
         ; Cmd = 16 ->
-            recuperarFilmesWatchlist(Filmes),
+            recuperarFilmesAssistidos(Filmes),
+            percorreFilmesFav(Filmes, FilmesOrganizados),
+            percorrerFilmes(FilmesOrganizados),
             writeln(Filmes),
             opcoes
         ; Cmd = 17 ->
@@ -204,3 +208,12 @@ acoes:-
         ; writeln('Opção inválida.'),
           fail % falha para sair do predicado se a opção for inválida
     ).
+
+percorreFilmesFav([[Titulo|_]|[]],Filmes):- 
+    atom_string(Titulo, TituloInput),
+    pesquisarFilmesPorTitulo(TituloInput,Filmes).
+percorreFilmesFav([[Titulo|_]|T],FilmesF):-
+    percorreFilmesFav(T,FilmesM,Final),
+    atom_string(Titulo, TituloInput),
+    pesquisarFilmesPorTitulo(TituloInput,Filmes),
+    append(Filmes,Final,FilmesF).
